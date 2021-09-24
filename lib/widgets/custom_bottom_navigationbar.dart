@@ -3,10 +3,13 @@ import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/screens/discover/discover_screen.dart';
 import 'package:i_padeel/screens/login&signup/login_screen.dart';
 import 'package:i_padeel/screens/notifications/notifications_screen.dart';
+import 'package:i_padeel/screens/side-menu/side_menu_widget.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
-  const CustomBottomNavigationBar({Key? key, required this.currentIndex})
+  final Function(BuildContext)? returnContext;
+  const CustomBottomNavigationBar(
+      {Key? key, required this.currentIndex, this.returnContext})
       : super(key: key);
 
   @override
@@ -30,6 +33,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       // UserRepo.setBuildContext(context);
       _currentIndex = widget.currentIndex;
       _isInit = false;
+      if (widget.returnContext == null) return;
+      widget.returnContext!(context);
     }
     super.initState();
   }

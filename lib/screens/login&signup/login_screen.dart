@@ -35,102 +35,105 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
         appBarTitle: '',
         context: context,
         leading: Container(),
-        body: Container(
-          color: Theme.of(context).primaryColor,
-          child: Column(
-            children: [
-              Flexible(
-                flex: 4,
-                child: Center(
-                  child: Container(
-                    margin: const EdgeInsets.all(16),
-                    child: Image.asset(
-                      'assets/images/logo-white.jpeg',
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height - 40,
+            color: Theme.of(context).primaryColor,
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 4,
+                  child: Center(
+                    child: Container(
+                      margin: const EdgeInsets.all(16),
+                      child: Image.asset(
+                        'assets/images/logo-white.jpeg',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Flexible(
-                flex: 2,
-                child: Center(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 32),
+                Flexible(
+                  flex: 2,
+                  child: Center(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32),
+                      child: Column(
+                        children: [
+                          CustomTextInputField(
+                            labelText: 'Email',
+                            hintText: 'Enter your email',
+                            controller: _emailController,
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: AppColors.hintTextColor,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          PasswordInput(
+                            passwordController: _passwordController,
+                            obscureText: obsecureText,
+                            callback: () {
+                              setState(() {
+                                obsecureText = !obsecureText;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Center(
                     child: Column(
                       children: [
-                        CustomTextInputField(
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
-                          controller: _emailController,
-                          prefixIcon: const Icon(
-                            Icons.email,
-                            color: AppColors.hintTextColor,
+                        InkWell(
+                          // onTap: () => Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const CustomBottomNavigationBar(
+                          //       currentIndex: 2,
+                          //     ),
+                          //   ),
+                          // ),
+                          onTap: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                "Don't Have An Account ?  ",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Ubuntu',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              Text(
+                                'Register Now!',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.white,
+                                  fontFamily: 'Ubuntu',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                          keyboardType: TextInputType.emailAddress,
                         ),
-                        PasswordInput(
-                          passwordController: _passwordController,
-                          obscureText: obsecureText,
-                          callback: () {
-                            setState(() {
-                              obsecureText = !obsecureText;
-                            });
-                          },
-                        )
+                        const SizedBox(height: 8),
+                        CustomTextButton(
+                          text: 'Login',
+                          onPressed: () {},
+                        ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              Flexible(
-                flex: 2,
-                child: Center(
-                  child: Column(
-                    children: [
-                      InkWell(
-                        // onTap: () => Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const CustomBottomNavigationBar(
-                        //       currentIndex: 2,
-                        //     ),
-                        //   ),
-                        // ),
-                        onTap: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "Don't Have An Account ?  ",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontFamily: 'Ubuntu',
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            Text(
-                              'Register Now!',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.white,
-                                fontFamily: 'Ubuntu',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      CustomTextButton(
-                        text: 'Login',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
