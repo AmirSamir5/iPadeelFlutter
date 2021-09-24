@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/screens/splash_screen.dart';
 import 'package:i_padeel/widgets/custom_bottom_navigationbar.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());

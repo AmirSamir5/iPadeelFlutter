@@ -3,6 +3,7 @@ import 'package:i_padeel/screens/discover/widgets/discover_button_widget.dart';
 import 'package:i_padeel/screens/discover/widgets/discover_locations_list.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with PageHelper {
     return buildPage(
       PageBuilder(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => SlideDrawer.of(context)?.toggle(),
           icon: const Icon(
             Icons.menu,
             color: Colors.white,
