@@ -45,20 +45,23 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 15)),
-                          Expanded(child: Container()),
-                          const Text("View all",
-                              maxLines: 3,
-                              textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12)),
+                                  fontSize: 18)),
+                          const Spacer(),
+                          const Text(
+                            " View all ",
+                            maxLines: 3,
+                            textDirection: TextDirection.ltr,
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14,
+                            ),
+                          ),
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 16),
+                        margin: const EdgeInsets.only(top: 16),
                         width: size.width,
                         height: size.height * 0.4,
                         child: ListView.builder(
@@ -70,19 +73,15 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                               onTap: () {
                                 print("selected item # x");
                               },
-                              child: Container(
-                                  margin: EdgeInsets.only(
-                                      right: 10, bottom: 10, left: 10),
-                                  height: size.height * 0.3,
-                                  child: LocationsListItem(
-                                    name: "Al ahly club",
-                                    card:
-                                        "https://media.istockphoto.com/photos/south-port-beach-boardwalk-at-sunset-picture-id1239827155?s=612x612",
-                                    logo:
-                                        "https://media.istockphoto.com/photos/south-port-beach-boardwalk-at-sunset-picture-id1239827155?s=612x612",
-                                    location: 'Nasr city',
-                                    price: 'EG 500/hr',
-                                  )),
+                              child: const LocationsListItem(
+                                name: "Al ahly club",
+                                card:
+                                    "https://media.istockphoto.com/photos/south-port-beach-boardwalk-at-sunset-picture-id1239827155?s=612x612",
+                                logo:
+                                    "https://media.istockphoto.com/photos/south-port-beach-boardwalk-at-sunset-picture-id1239827155?s=612x612",
+                                location: 'Nasr city',
+                                price: 'EG 500/hr',
+                              ),
                             );
                           },
                         ),

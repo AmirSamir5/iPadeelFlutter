@@ -3,23 +3,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class LocationsListItem extends StatefulWidget {
-  String _name;
-  String _card;
-  String _logo;
-  String _location;
-  String _price;
+  final String name;
+  final String card;
+  final String logo;
+  final String location;
+  final String price;
 
-  LocationsListItem({
-    required String name,
-    required String card,
-    required String logo,
-    required String location,
-    required String price,
-  })  : this._name = name,
-        this._card = card,
-        this._logo = logo,
-        this._price = price,
-        this._location = location {}
+  const LocationsListItem({
+    Key? key,
+    required this.name,
+    required this.card,
+    required this.logo,
+    required this.location,
+    required this.price,
+  }) : super(key: key);
 
   @override
   _LocationsListItemState createState() => _LocationsListItemState();
@@ -29,6 +26,7 @@ class _LocationsListItemState extends State<LocationsListItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.all(16),
       height: MediaQuery.of(context).size.height * 0.3,
       width: MediaQuery.of(context).size.width / 2,
       decoration: BoxDecoration(
@@ -37,17 +35,17 @@ class _LocationsListItemState extends State<LocationsListItem> {
               topLeft: Radius.circular(25),
               topRight: Radius.circular(5),
               bottomLeft: Radius.circular(5)),*/
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.5),
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
               spreadRadius: 5,
               blurRadius: 7,
             )
           ]),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Stack(fit: StackFit.expand, children: <Widget>[
           /* CachedNetworkImage(
             imageUrl: widget._card,
@@ -65,7 +63,10 @@ class _LocationsListItemState extends State<LocationsListItem> {
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),*/
           Container(
-            child: Image.asset("assets/images/tennisCourt.jpeg"),
+            child: Image.asset(
+              "assets/images/tennisCourt.jpeg",
+              fit: BoxFit.fill,
+            ),
           ),
           Column(
             children: [
@@ -87,15 +88,15 @@ class _LocationsListItemState extends State<LocationsListItem> {
                     ),
                   ),
                   Container(
-                    margin:
-                        EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
+                    margin: const EdgeInsets.only(
+                        left: 16, right: 10, top: 8, bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(
                           flex: 1,
-                          child: Text(widget._name,
+                          child: Text(widget.name,
                               maxLines: 3,
                               textDirection: TextDirection.ltr,
                               style: const TextStyle(
@@ -123,7 +124,7 @@ class _LocationsListItemState extends State<LocationsListItem> {
                               const SizedBox(
                                 width: 15,
                               ),
-                              Text(widget._location,
+                              Text(widget.location,
                                   maxLines: 3,
                                   textDirection: TextDirection.ltr,
                                   style: const TextStyle(
@@ -138,7 +139,7 @@ class _LocationsListItemState extends State<LocationsListItem> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text(widget._price,
+                          child: Text(widget.price,
                               maxLines: 3,
                               textDirection: TextDirection.ltr,
                               style: const TextStyle(
