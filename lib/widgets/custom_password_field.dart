@@ -39,9 +39,10 @@ class PasswordInput extends StatelessWidget {
         onTap: callback as void Function()?,
         child: Icon(
           !obscureText ? Icons.visibility : Icons.visibility_off,
-          color: AppColors.primaryColor,
+          color: AppColors.hintTextColor,
         ),
       ),
+      prefixIcon: const Icon(Icons.lock, color: AppColors.hintTextColor),
       isKeyboardDigitsOnly: isKeyboardDigitsOnly,
       validateEmptyString: true,
     );

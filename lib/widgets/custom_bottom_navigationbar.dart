@@ -43,31 +43,42 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         index: _currentIndex,
       ),
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (value) {
-          setState(() {
-            _currentIndex = value;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.primaryColor,
-        selectedItemColor: AppColors.secondaryColor,
-        unselectedItemColor: Colors.white.withOpacity(0.5),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Discover',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Login',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 10,
+              spreadRadius: 0.1,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (value) {
+            setState(() {
+              _currentIndex = value;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: AppColors.primaryColor,
+          selectedItemColor: AppColors.secondaryColor,
+          unselectedItemColor: Colors.white.withOpacity(0.5),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Discover',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: 'Notifications',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Login',
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -23,9 +23,11 @@ abstract class PageHelper {
         Scaffold(
           key: pageBuilder.scaffoldKey,
           backgroundColor: Colors.transparent,
+          extendBodyBehindAppBar: pageBuilder.extendbody,
           appBar: (pageBuilder.appbar)
               ? AppBar(
                   primary: true,
+                  elevation: 0,
                   brightness: Brightness.light,
                   actions: pageBuilder.appBarActions ?? [],
                   leading: (pageBuilder.leading) ??

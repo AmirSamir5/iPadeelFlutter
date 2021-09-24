@@ -135,12 +135,12 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
               validator: (val) {
                 if (val == null) {
                   return 'Please enter correct' +
-                      (widget.errorLabel ?? widget.labelText)!;
+                      (widget.errorLabel ?? widget.labelText ?? "");
                 }
                 if (widget.validateEmptyString &&
                     (val.isEmpty || val.trim().isEmpty)) {
                   return 'Please enter correct' +
-                      (widget.errorLabel ?? widget.labelText)!;
+                      (widget.errorLabel ?? widget.labelText ?? "");
                 }
                 //  else if (widget.validateZeroNumber &&
                 //     widget.keyboardType.index == 2 &&
