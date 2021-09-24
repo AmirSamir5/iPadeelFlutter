@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/screens/discover/widgets/discover_button_widget.dart';
+import 'package:i_padeel/screens/discover/widgets/discover_locations_list.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 
@@ -36,20 +37,17 @@ class _DiscoverScreenState extends State<DiscoverScreen> with PageHelper {
         appBarTitle: 'Discover',
         context: context,
         body: Container(
-          margin: const EdgeInsets.only(top: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              const Flexible(
-                flex: 1,
+              const Expanded(
+                flex: 2,
                 child: DiscoverButtonWidget(),
               ),
-              Flexible(
-                flex: 1,
-                child: Center(
-                  child: Container(),
-                ),
+              Expanded(
+                flex: 3,
+                child: DiscoverLocationsList(),
               ),
             ],
           ),
