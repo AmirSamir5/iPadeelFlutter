@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
+import 'package:i_padeel/screens/notifications/notifications_screen.dart';
 import 'package:i_padeel/screens/profile/profile_screen.dart';
 import 'package:i_padeel/screens/settings/settings_screen.dart';
 import 'package:i_padeel/screens/side-menu/widgets/list_tile_widget.dart';
@@ -88,12 +89,12 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
             ListTileWidget(
               currentIndex: _currentIndex,
               widgetIndex: 3,
-              title: 'Profile',
-              icon: Icons.person_outline,
+              title: 'Notifications',
+              icon: Icons.notifications,
               onTap: () {
                 setState(() {
                   _currentIndex = 3;
-                  childWidget = ProfileScreen(
+                  childWidget = NotificationsScreen(
                     returnContext: (context) {
                       childContext = context;
                       SlideDrawer.of(childContext!)?.close();

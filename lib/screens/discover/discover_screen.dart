@@ -35,7 +35,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with PageHelper {
           )
         ],
         scaffoldKey: _scaffoldkey,
-        appBarTitle: 'Discover',
+        appBarTitle: 'Home',
         context: context,
         body: Container(
           child: Column(

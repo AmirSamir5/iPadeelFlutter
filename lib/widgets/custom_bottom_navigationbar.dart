@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/screens/discover/discover_screen.dart';
 import 'package:i_padeel/screens/login&signup/login_screen.dart';
-import 'package:i_padeel/screens/notifications/notifications_screen.dart';
-import 'package:i_padeel/screens/side-menu/side_menu_widget.dart';
+import 'package:i_padeel/screens/online-shop.dart/online-shop-screen.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -21,7 +20,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Widget> _screensList = [
     const DiscoverScreen(),
-    const NotificationsScreen(),
+    const OnlineShopScreen(),
     const LoginScreen(),
   ];
   int _currentIndex = 0;
@@ -72,11 +71,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Discover',
+              label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
+              icon: Icon(Icons.shopping_bag),
+              label: 'Online Shop',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

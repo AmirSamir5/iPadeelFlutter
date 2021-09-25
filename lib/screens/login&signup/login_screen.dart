@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
                     child: Container(
                       margin: const EdgeInsets.all(16),
                       child: Image.asset(
-                        'assets/images/logo-white.jpeg',
+                        'assets/images/logo-white.png',
                       ),
                     ),
                   ),
