@@ -11,12 +11,12 @@ class DiscoverButtonWidget extends StatelessWidget {
       children: [
         SvgPicture.asset(
           'assets/svg/discover_buttons.svg',
-          height: 200,
+          height: 180,
           width: MediaQuery.of(context).size.width,
         ),
         GridView.count(
           crossAxisCount: 2,
-          childAspectRatio: (MediaQuery.of(context).size.width / 200),
+          childAspectRatio: (MediaQuery.of(context).size.width / 180),
           shrinkWrap: true,
           crossAxisSpacing: 23,
           mainAxisSpacing: 23,
