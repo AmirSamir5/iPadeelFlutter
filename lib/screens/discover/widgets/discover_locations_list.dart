@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/screens/discover/widgets/locations_list_item.dart';
+import 'package:i_padeel/screens/make_reservation/create_reservation.dart';
 import 'package:i_padeel/utils/shadow_text.dart';
 
 class DiscoverLocationsList extends StatefulWidget {
@@ -38,16 +39,16 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                   child: Column(
                     children: [
                       Row(
-                        children: [
-                          const Text("Locations",
+                        children: const [
+                          Text("Locations",
                               maxLines: 3,
                               textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18)),
-                          const Spacer(),
-                          const Text(
+                          Spacer(),
+                          Text(
                             " View all ",
                             maxLines: 3,
                             textDirection: TextDirection.ltr,
@@ -71,7 +72,9 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                           itemBuilder: (context, innerIndex) {
                             return GestureDetector(
                               onTap: () {
-                                print("selected item # x");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        CreateReservationScreen()));
                               },
                               child: const LocationsListItem(
                                 name: "Al ahly club",

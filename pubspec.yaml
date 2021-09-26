@@ -43,6 +43,9 @@ dependencies:
   provider: ^6.0.0
   http: ^0.13.1
   retry: ^3.0.1  
+  intl: ^0.17.0
+  fluttertoast: ^8.0.8
+  flutter_datetime_picker: ^1.5.1
   
   
 dev_dependencies:
