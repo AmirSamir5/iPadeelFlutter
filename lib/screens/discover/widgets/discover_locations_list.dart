@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/screens/discover/widgets/locations_list_item.dart';
-import 'package:i_padeel/screens/make_reservation/create_reservation.dart';
+import 'package:i_padeel/screens/create_reservation/create_reservation.dart';
 import 'package:i_padeel/utils/shadow_text.dart';
 
 class DiscoverLocationsList extends StatefulWidget {

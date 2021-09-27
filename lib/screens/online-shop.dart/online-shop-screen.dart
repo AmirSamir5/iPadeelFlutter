@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 
@@ -18,8 +19,16 @@ class _OnlineShopScreenState extends State<OnlineShopScreen> with PageHelper {
         scaffoldKey: _scaffoldkey,
         appBarTitle: 'Online Shop',
         context: context,
+        extendbody: true,
         leading: Container(),
-        body: Container(),
+        body: Container(
+          color: AppColors.primaryColor,
+          height: MediaQuery.of(context).size.height,
+          child: Image.asset(
+            'assets/images/coming-soon.jpeg',
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

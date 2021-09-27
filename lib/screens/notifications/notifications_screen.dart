@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 
 class NotificationsScreen extends StatefulWidget {
   final Function(BuildContext)? returnContext;
@@ -32,7 +33,13 @@ class _NotificationsScreenState extends State<NotificationsScreen>
         scaffoldKey: _scaffoldkey,
         appBarTitle: 'Notifications',
         context: context,
-        leading: Container(),
+        leading: IconButton(
+          onPressed: () => SlideDrawer.of(context)?.toggle(),
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+        ),
         body: Container(),
       ),
     );

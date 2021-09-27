@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SlotsWidget extends StatelessWidget {
-  String fromTime;
-  String toTime;
-  int seats;
+  final String fromTime;
+  final String toTime;
+  final int seats;
 
-  SlotsWidget(
-      {required this.fromTime, required this.toTime, required this.seats});
+  SlotsWidget({
+    required this.fromTime,
+    required this.toTime,
+    required this.seats,
+  });
 
   @override
   Widget build(BuildContext context) {
