@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
+import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
+import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/widgets/custom_input_field.dart';
 import 'package:i_padeel/widgets/custom_password_field.dart';
 import 'package:i_padeel/widgets/custom_text_button.dart';
+import 'package:provider/provider.dart';
+import 'package:validators/validators.dart' as validator;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,15 +21,62 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> with PageHelper {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool obsecureText = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _removeFocus() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
+  Future _loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<AuthProvider>(context, listen: false)
+          .login(_emailController.text, _passwordController.text);
+    } on HttpException catch (error) {
+      ShowDialogHelper.showDialogPopup(
+          'Authentication Failed', error.message, context, () {
+        Navigator.of(context).pop();
+      });
+    } on SocketException catch (_) {
+      ShowDialogHelper.showDialogPopup(
+          'Error',
+          'please check your internet connection and try again later',
+          context, () {
+        Navigator.of(context).pop();
+      });
+    } catch (error) {
+      ShowDialogHelper.showDialogPopup('Authentication Failed',
+          'Sorry, an unexpected error has occurred.', context, () {
+        Navigator.of(context).pop();
+      });
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  _saveForm() {
+    _removeFocus();
+    if (_formKey.currentState == null) return;
+    if (_formKey.currentState!.validate()) {
+      _loginUser();
+    }
   }
 
   @override
@@ -57,28 +110,33 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
                   child: Center(
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 32),
-                      child: Column(
-                        children: [
-                          CustomTextInputField(
-                            labelText: 'Email',
-                            hintText: 'Enter your email',
-                            controller: _emailController,
-                            prefixIcon: const Icon(
-                              Icons.email,
-                              color: AppColors.hintTextColor,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            CustomTextInputField(
+                              labelText: 'Email',
+                              validateEmptyString: true,
+                              hintText: 'Enter your email',
+                              controller: _emailController,
+                              prefixIcon: const Icon(
+                                Icons.email,
+                                color: AppColors.hintTextColor,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          PasswordInput(
-                            passwordController: _passwordController,
-                            obscureText: obsecureText,
-                            callback: () {
-                              setState(() {
-                                obsecureText = !obsecureText;
-                              });
-                            },
-                          )
-                        ],
+                            PasswordInput(
+                              labelText: 'Password',
+                              passwordController: _passwordController,
+                              obscureText: obsecureText,
+                              callback: () {
+                                setState(() {
+                                  obsecureText = !obsecureText;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -124,10 +182,16 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        CustomTextButton(
-                          text: 'Login',
-                          onPressed: () {},
-                        ),
+                        _isLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.secondaryColor,
+                                ),
+                              )
+                            : CustomTextButton(
+                                text: 'Login',
+                                onPressed: () => _saveForm(),
+                              ),
                       ],
                     ),
                   ),

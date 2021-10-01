@@ -46,6 +46,11 @@ dependencies:
   intl: ^0.17.0
   fluttertoast: ^8.0.8
   flutter_datetime_picker: ^1.5.1
+  device_info: ^2.0.2
+  shared_preferences: ^2.0.8
+  package_info: ^2.0.2
+  validators: ^3.0.0
+  
    
 
 dev_dependencies:
