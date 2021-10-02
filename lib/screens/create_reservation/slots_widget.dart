@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class SlotsWidget extends StatelessWidget {
+class SlotsWidget extends StatefulWidget {
   final String fromTime;
   final String toTime;
-  final int seats;
 
   SlotsWidget({
     required this.fromTime,
     required this.toTime,
-    required this.seats,
   });
+
+  final DateFormat formatter = DateFormat('hh-mm a');
+
+  @override
+  State<SlotsWidget> createState() => _SlotsWidgetState();
+}
+
+class _SlotsWidgetState extends State<SlotsWidget> {
+  String fromFormattedTime() {
+    return widget.formatter
+        .format(DateFormat('HH/mm/ss').parse(widget.fromTime));
+  }
+
+  String toFormattedTime() {
+    return widget.formatter.format(DateFormat('HH/mm/ss').parse(widget.toTime));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +34,14 @@ class SlotsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            fromTime,
+            widget.fromTime,
             style: TextStyle(color: Colors.black, fontSize: 12),
           ),
           SizedBox(
             height: 10,
           ),
           Text(
-            toTime,
+            widget.toTime,
             style: TextStyle(color: Colors.black, fontSize: 12),
           )
         ],

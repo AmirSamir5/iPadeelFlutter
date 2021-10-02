@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class LocationsListItem extends StatefulWidget {
   final String name;
   final String card;
-  final String logo;
   final String location;
   final String price;
 
@@ -13,7 +12,6 @@ class LocationsListItem extends StatefulWidget {
     Key? key,
     required this.name,
     required this.card,
-    required this.logo,
     required this.location,
     required this.price,
   }) : super(key: key);

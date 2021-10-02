@@ -3,6 +3,8 @@ import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/reservations_provider.dart';
 import 'package:i_padeel/screens/reservationsList/reservations_list_screen.dart';
+import 'package:i_padeel/providers/locations_provider.dart';
+import 'package:i_padeel/providers/avaliable_slots_provider.dart';
 import 'package:i_padeel/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: AuthProvider()),
         ChangeNotifierProvider.value(value: ReservationsProvider()),
+        ChangeNotifierProvider.value(value: LocationsProvider()),
+        ChangeNotifierProvider.value(value: AvaliableTimeSLotsProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

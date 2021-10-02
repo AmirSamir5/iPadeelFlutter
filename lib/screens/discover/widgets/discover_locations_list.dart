@@ -1,97 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:i_padeel/constants/app_colors.dart';
-import 'package:i_padeel/models/location.dart';
+import 'package:i_padeel/providers/locations_provider.dart';
+import 'package:i_padeel/screens/create_reservation/select_time_slot.dart';
 import 'package:i_padeel/screens/discover/widgets/locations_list_item.dart';
-import 'package:i_padeel/screens/create_reservation/create_reservation.dart';
-import 'package:i_padeel/utils/shadow_text.dart';
+import 'package:provider/provider.dart';
 
 class DiscoverLocationsList extends StatefulWidget {
   DiscoverLocationsList({Key? key}) : super(key: key);
-  List<Location> _locations = [Location(), Location(), Location(), Location()];
-  bool _loading = false;
   bool _isInit = false;
-  bool _reachedEndOfPage = false;
   @override
   _DiscoverLocationsListState createState() => _DiscoverLocationsListState();
 }
 
 class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (!widget._isInit) {
+      widget._isInit = true;
+      _loadLocations();
+    }
+  }
+
+  void _loadLocations() {
+    Provider.of<LocationsProvider>(context, listen: false).fetchLocations();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    return Container(
-      child: widget._loading
-          ? const Center(
-              child: CircularProgressIndicator(
-              backgroundColor: AppColors.secondaryColor,
-            ))
-          : (!widget._loading && widget._locations.isEmpty)
-              ? const Center(
-                  child: Text(
-                    "No Locations to show",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+    final locations = Provider.of<LocationsProvider>(context).locations;
+    final isLoading = Provider.of<LocationsProvider>(context).isLoading;
+    final failedToLoad = Provider.of<LocationsProvider>(context).failedToLoad;
+    return failedToLoad
+        ? GestureDetector(
+            onTap: () {
+              _loadLocations();
+            },
+            // ignore: sized_box_for_whitespace
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: const SizedBox(
+                height: 60,
+                width: 60,
+                child: Center(
+                    child: Icon(Icons.redo, color: AppColors.secondaryColor)),
+              ),
+            ),
+          )
+        : isLoading
+            ? const SizedBox(
+                height: 60,
+                width: 60,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.secondaryColor,
                   ),
-                )
-              : Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: const [
-                          Text("Locations",
-                              maxLines: 3,
-                              textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18)),
-                          Spacer(),
-                          Text(
-                            " View all ",
-                            maxLines: 3,
-                            textDirection: TextDirection.ltr,
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
+                ))
+            : Container(
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        backgroundColor: AppColors.secondaryColor,
+                      ))
+                    : (!isLoading && locations.isEmpty)
+                        ? const Center(
+                            child: Text(
+                              "No Locations to show",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 8),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: const [
+                                    Text("Locations",
+                                        maxLines: 3,
+                                        textDirection: TextDirection.ltr,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    Spacer(),
+                                    Text(
+                                      " View all ",
+                                      maxLines: 3,
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 16),
+                                  width: size.width,
+                                  height: size.height * 0.4,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: locations.length,
+                                    itemBuilder: (context, innerIndex) {
+                                      final item = locations[innerIndex];
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (ctx) =>
+                                                      SelectTimeSlotWidget(
+                                                        location: item,
+                                                      )));
+                                        },
+                                        child: LocationsListItem(
+                                          name: item.name,
+                                          card: item.image ?? "",
+                                          location: item.address,
+                                          price: 'EG ${item.slotPrice}/hr',
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 16),
-                        width: size.width,
-                        height: size.height * 0.4,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget._locations.length,
-                          itemBuilder: (context, innerIndex) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        CreateReservationScreen()));
-                              },
-                              child: const LocationsListItem(
-                                name: "Al ahly club",
-                                card:
-                                    "https://media.istockphoto.com/photos/south-port-beach-boardwalk-at-sunset-picture-id1239827155?s=612x612",
-                                logo:
-                                    "https://media.istockphoto.com/photos/south-port-beach-boardwalk-at-sunset-picture-id1239827155?s=612x612",
-                                location: 'Nasr city',
-                                price: 'EG 500/hr',
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-    );
+              );
   }
 }
