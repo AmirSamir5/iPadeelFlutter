@@ -150,7 +150,7 @@ class Errors {
 String parserServerError(dynamic serverResponse) {
   // parser server error message here
   var errorResponse = json.decode(serverResponse.body);
-  return errorResponse['Message'];
+  return errorResponse['error_description'];
 }
 
 String addHeaderstoUrl(String url, Map<String, dynamic>? headers) {

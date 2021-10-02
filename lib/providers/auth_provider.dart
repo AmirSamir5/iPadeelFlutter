@@ -107,58 +107,58 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> refreshToken() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
-  //   print(accessToken);
-  //   String? refreshToken = prefs.getString(Constant.prefsUserRefreshTokenKey);
-  //   print(refreshToken);
-  //   if (accessToken != null &&
-  //       accessToken != "" &&
-  //       refreshToken != "" &&
-  //       refreshToken != null) {
-  //     Map<String, dynamic> data = Map<String, dynamic>();
-  //     data['client_id'] = clientId;
-  //     data['client_secret'] = clientSecret;
-  //     data['grant_type'] = 'refresh_token';
-  //     data['refresh_token'] =
-  //         prefs.getString(Constant.prefsUserRefreshTokenKey);
-  //     inspect(data);
-  //     final url = Urls.user_token_auth;
-  //     print(url);
-  //     try {
-  //       final response = await retry(
-  //           () => http
-  //               .post(Uri.parse(url), body: data)
-  //               .timeout(Duration(seconds: 20)),
-  //           retryIf: (e) => e is HttpException || e is SocketException);
-  //       final responseData = json.decode(response.body);
-  //       print(responseData);
-  //       if (response.statusCode == 200) {
-  //         DateTime expiryDate =
-  //             DateTime.now().add(Duration(seconds: responseData['expires_in']));
-  //         prefs.clear();
-  //         prefs.setString(
-  //             Constant.prefsUserAccessTokenKey, responseData['access_token']);
-  //         prefs.setString(
-  //             Constant.prefsUserRefreshTokenKey, responseData['refresh_token']);
-  //         prefs.setString(Constant.prefsTokenExpirationDateKey,
-  //             expiryDate.toIso8601String());
-  //         print('Token Refreshed');
-  //         _isAccountAuthenticated = true;
-  //         //notifyListeners();
-  //       } else {
-  //         final prefs = await SharedPreferences.getInstance();
-  //         prefs.clear();
-  //         _isAccountAuthenticated = false;
-  //         notifyListeners();
-  //       }
-  //     } catch (error) {
-  //       print(error);
-  //       throw error;
-  //     }
-  //   }
-  // }
+  Future<void> refreshToken() async {
+    // final prefs = await SharedPreferences.getInstance();
+    // String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
+    // print(accessToken);
+    // String? refreshToken = prefs.getString(Constant.prefsUserRefreshTokenKey);
+    // print(refreshToken);
+    // if (accessToken != null &&
+    //     accessToken != "" &&
+    //     refreshToken != "" &&
+    //     refreshToken != null) {
+    //   Map<String, dynamic> data = Map<String, dynamic>();
+    //   data['client_id'] = clientId;
+    //   data['client_secret'] = clientSecret;
+    //   data['grant_type'] = 'refresh_token';
+    //   data['refresh_token'] =
+    //       prefs.getString(Constant.prefsUserRefreshTokenKey);
+    //   inspect(data);
+    //   final url = Urls.user_token_auth;
+    //   print(url);
+    //   try {
+    //     final response = await retry(
+    //         () => http
+    //             .post(Uri.parse(url), body: data)
+    //             .timeout(Duration(seconds: 20)),
+    //         retryIf: (e) => e is HttpException || e is SocketException);
+    //     final responseData = json.decode(response.body);
+    //     print(responseData);
+    //     if (response.statusCode == 200) {
+    //       DateTime expiryDate =
+    //           DateTime.now().add(Duration(seconds: responseData['expires_in']));
+    //       prefs.clear();
+    //       prefs.setString(
+    //           Constant.prefsUserAccessTokenKey, responseData['access_token']);
+    //       prefs.setString(
+    //           Constant.prefsUserRefreshTokenKey, responseData['refresh_token']);
+    //       prefs.setString(Constant.prefsTokenExpirationDateKey,
+    //           expiryDate.toIso8601String());
+    //       print('Token Refreshed');
+    //       _isAccountAuthenticated = true;
+    //       //notifyListeners();
+    //     } else {
+    //       final prefs = await SharedPreferences.getInstance();
+    //       prefs.clear();
+    //       _isAccountAuthenticated = false;
+    //       notifyListeners();
+    //     }
+    //   } catch (error) {
+    //     print(error);
+    //     throw error;
+    //   }
+    // }
+  }
 
   setBuildContext(BuildContext context) {
     _context = context;
@@ -253,35 +253,39 @@ class AuthProvider with ChangeNotifier {
   //   }
   // }
 
-  // Future<void> logoutUser(BuildContext context) async {
-  //   _context = context;
-  //   await _setDeviceOSAndID();
-  //   final prefs = await SharedPreferences.getInstance();
-  //   String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
-  //   String url = Urls.user_logout;
-  //   try {
-  //     if (accessToken != null) {
-  //       final response = await retry(
-  //           () => http.post(Uri.parse(url), headers: {
-  //                 "Accept": "application/json",
-  //                 "Authorization": "OAuth2 " + accessToken
-  //               }, body: {
-  //                 "device_id": _deviceId
-  //               }).timeout(Duration(seconds: 5)),
-  //           retryIf: (e) => e is SocketException || e is TimeoutException);
-  //       if (response.statusCode == 200 || response.statusCode == 401) {
-  //         prefs.clear();
-  //         _isAccountAuthenticated = false;
-  //         notifyListeners();
-  //       } else {
-  //         throw HttpException('Sorry, an unexpected error has occurred.');
-  //       }
-  //     } else {
-  //       throw HttpException('Sorry, an unexpected error has occurred.');
-  //     }
-  //   } catch (error) {
-  //     print(error);
-  //     throw error;
-  //   }
-  // }
+  Future<void> logoutUser(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    _isAccountAuthenticated = false;
+    notifyListeners();
+    // _context = context;
+    // await _setDeviceOSAndID();
+    // final prefs = await SharedPreferences.getInstance();
+    // String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
+    // String url = Urls.user_logout;
+    // try {
+    //   if (accessToken != null) {
+    //     final response = await retry(
+    //         () => http.post(Uri.parse(url), headers: {
+    //               "Accept": "application/json",
+    //               "Authorization": "OAuth2 " + accessToken
+    //             }, body: {
+    //               "device_id": _deviceId
+    //             }).timeout(Duration(seconds: 5)),
+    //         retryIf: (e) => e is SocketException || e is TimeoutException);
+    //     if (response.statusCode == 200 || response.statusCode == 401) {
+    //       prefs.clear();
+    //       _isAccountAuthenticated = false;
+    //       notifyListeners();
+    //     } else {
+    //       throw HttpException('Sorry, an unexpected error has occurred.');
+    //     }
+    //   } else {
+    //     throw HttpException('Sorry, an unexpected error has occurred.');
+    //   }
+    // } catch (error) {
+    //   print(error);
+    //   throw error;
+    // }
+  }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
+import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/screens/notifications/notifications_screen.dart';
 import 'package:i_padeel/screens/profile/profile_screen.dart';
 import 'package:i_padeel/screens/settings/settings_screen.dart';
 import 'package:i_padeel/screens/side-menu/widgets/list_tile_widget.dart';
 import 'package:i_padeel/screens/side-menu/widgets/user-sideInfo.dart';
 import 'package:i_padeel/widgets/custom_bottom_navigationbar.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 
 class SideMenuWidget extends StatefulWidget {
@@ -26,6 +28,7 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    bool isAuth = Provider.of<AuthProvider>(context).isAccountAuthenticated;
     return SlideDrawer(
       curve: Curves.easeInOut,
       backgroundColor: Colors.black,
@@ -35,6 +38,10 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
       child: childWidget ??
           CustomBottomNavigationBar(
             currentIndex: widget.currentIndex,
+            returnContext: (context) {
+              childContext = context;
+              SlideDrawer.of(childContext!)?.close();
+            },
           ),
       contentDrawer: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -103,18 +110,22 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                 });
               },
             ),
-            ListTileWidget(
-              currentIndex: _currentIndex,
-              widgetIndex: 4,
-              title: 'Logout',
-              icon: Icons.logout,
-              onTap: () {
-                setState(() {
-                  _currentIndex = 4;
-                  Navigator.of(context).pop();
-                });
-              },
-            ),
+            isAuth
+                ? ListTileWidget(
+                    currentIndex: _currentIndex,
+                    widgetIndex: 4,
+                    title: 'Logout',
+                    icon: Icons.logout,
+                    onTap: () async {
+                      await Provider.of<AuthProvider>(context, listen: false)
+                          .logoutUser(context);
+                      setState(() {
+                        _currentIndex = 0;
+                        SlideDrawer.of(childContext!)?.close();
+                      });
+                    },
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

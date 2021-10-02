@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:i_padeel/providers/auth_provider.dart';
+import 'package:i_padeel/screens/reservationsList/reservations_list_screen.dart';
+import 'package:i_padeel/utils/show_dialog.dart';
+import 'package:provider/provider.dart';
 
 class DiscoverButtonWidget extends StatelessWidget {
   const DiscoverButtonWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isAuth = Provider.of<AuthProvider>(context).isAccountAuthenticated;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -22,7 +27,23 @@ class DiscoverButtonWidget extends StatelessWidget {
           mainAxisSpacing: 23,
           children: [
             GestureDetector(
-              onTap: () => print('booking tapped'),
+              onTap: isAuth
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ReservationsListScreen(),
+                        ),
+                      );
+                    }
+                  : () {
+                      ShowDialogHelper.showDialogPopup(
+                        'Attention',
+                        'You must Login First',
+                        context,
+                        () => Navigator.of(context).pop(),
+                      );
+                    },
             ),
             GestureDetector(
               onTap: () => print('training tapped'),

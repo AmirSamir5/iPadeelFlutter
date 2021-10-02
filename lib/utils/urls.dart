@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Urls {
   //static String domain = "https://stagingv2.zabatnee.com/api/";
 
@@ -7,5 +5,9 @@ class Urls {
 
   static String loginUser() {
     return domain + "o/token/";
+  }
+
+  static String getReservationsList() {
+    return domain + "reservation/mob/court";
   }
 }

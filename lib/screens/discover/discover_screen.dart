@@ -37,7 +37,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with PageHelper {
         scaffoldKey: _scaffoldkey,
         appBarTitle: 'Home',
         context: context,
-        body: Container(
+        body: SizedBox(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,

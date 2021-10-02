@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  bool obsecureText = false;
+  bool obsecureText = true;
   bool _isLoading = false;
 
   @override
@@ -61,8 +61,8 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
         Navigator.of(context).pop();
       });
     } catch (error) {
-      ShowDialogHelper.showDialogPopup('Authentication Failed',
-          'Sorry, an unexpected error has occurred.', context, () {
+      ShowDialogHelper.showDialogPopup(
+          'Authentication Failed', error.toString(), context, () {
         Navigator.of(context).pop();
       });
     }

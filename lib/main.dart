@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
+import 'package:i_padeel/providers/reservations_provider.dart';
+import 'package:i_padeel/screens/reservationsList/reservations_list_screen.dart';
 import 'package:i_padeel/screens/splash_screen.dart';
-import 'package:i_padeel/widgets/custom_bottom_navigationbar.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -16,12 +17,15 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: AuthProvider()),
+        ChangeNotifierProvider.value(value: ReservationsProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primaryColor: AppColors.primaryColor,
           secondaryHeaderColor: AppColors.secondaryColor,
+          canvasColor: const Color(0xff7B1FA2), //gradientColor1
+          cardColor: const Color(0xff4527A0), //gradientColor2
           textTheme: const TextTheme(
             headline1: TextStyle(
               color: Colors.white,
@@ -35,9 +39,19 @@ class MyApp extends StatelessWidget {
               fontSize: 21,
               fontWeight: FontWeight.bold,
             ),
+            bodyText1: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Ubuntu',
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         home: const SplashScreen(),
+        routes: {
+          ReservationsListScreen.routeName: (context) =>
+              const ReservationsListScreen(),
+        },
       ),
     );
   }

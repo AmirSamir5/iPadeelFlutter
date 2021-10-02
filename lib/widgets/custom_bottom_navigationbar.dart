@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
+import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/screens/discover/discover_screen.dart';
 import 'package:i_padeel/screens/login&signup/login_screen.dart';
 import 'package:i_padeel/screens/online-shop.dart/online-shop-screen.dart';
+import 'package:i_padeel/widgets/custom_auth_screen.dart';
+import 'package:provider/provider.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -21,7 +24,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   final List<Widget> _screensList = [
     const DiscoverScreen(),
     const OnlineShopScreen(),
-    const LoginScreen(),
+    const CustomAuthScreen(),
   ];
   int _currentIndex = 0;
   bool _isInit = true;
@@ -40,6 +43,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    bool isAuth = Provider.of<AuthProvider>(context).isAccountAuthenticated;
     return Scaffold(
       key: _scaffoldKey,
       body: IndexedStack(
@@ -68,18 +72,18 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           backgroundColor: AppColors.primaryColor,
           selectedItemColor: AppColors.secondaryColor,
           unselectedItemColor: Colors.white.withOpacity(0.5),
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag),
               label: 'Online Shop',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Login',
+              icon: const Icon(Icons.person),
+              label: isAuth ? 'Profile' : 'Login',
             ),
           ],
         ),
