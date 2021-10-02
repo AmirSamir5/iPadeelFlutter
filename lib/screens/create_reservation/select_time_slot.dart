@@ -5,7 +5,9 @@ import 'package:i_padeel/models/avaliable_slots.dart';
 import 'package:i_padeel/models/courts.dart';
 import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/providers/avaliable_slots_provider.dart';
+import 'package:i_padeel/providers/locations_provider.dart';
 import 'package:i_padeel/screens/create_reservation/slots_widget.dart';
+import 'package:i_padeel/utils/constants.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:i_padeel/utils/shadow_text.dart';
@@ -13,6 +15,7 @@ import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/widgets/custom_text_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectTimeSlotWidget extends StatefulWidget {
   final Location _location;
@@ -56,6 +59,33 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
   void _getAvaliableSlots() {
     Provider.of<AvaliableTimeSLotsProvider>(context, listen: false)
         .fetchLocationSlots(widget._location.guid);
+  }
+
+  Future<void> _createReservation() async {
+    if (_selectedDate == null ||
+        _selectedCourt == null ||
+        _selectedSLot == null) {
+      return;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
+    if (accessToken == null) {
+      _showErrorDialog("Please login first before making a reservation");
+      return;
+    }
+
+    try {
+      Provider.of<LocationsProvider>(context).CreateReservation(_selectedDate!,
+          _selectedCourt!.guid, _selectedSLot!.fromTime, _selectedSLot!.toTime);
+
+      ShowDialogHelper.showDialogPopup("Congratulations",
+          "Your reservation has been completed successfully", context, () {
+        Navigator.of(context).pop();
+      });
+    } catch (error) {
+      _showErrorDialog("Something went wrong,Please try again later");
+    }
   }
 
   void _showErrorDialog(String message) {
@@ -382,17 +412,16 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
                         )
                       : Container(),
                   const SizedBox(height: 32),
-                  CustomTextButton(
-                    text: 'Reserve',
-                    onPressed: () {
-                      ShowDialogHelper.showDialogPopup(
-                          "Congratulations",
-                          "Your reservation has been completed successfully",
-                          context, () {
-                        Navigator.of(context).pop();
-                      });
-                    },
-                  )
+                  (_selectedCourt != null &&
+                          _selectedCourt != null &&
+                          _selectedSLot != null)
+                      ? CustomTextButton(
+                          text: 'Reserve',
+                          onPressed: () {
+                            _createReservation();
+                          },
+                        )
+                      : Container()
                 ],
               ),
             ),

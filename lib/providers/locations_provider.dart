@@ -58,4 +58,34 @@ class LocationsProvider with ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<bool> CreateReservation(
+      String date, String courtId, String fromTime, String toTime) async {
+    Map<String, dynamic> data = <String, dynamic>{};
+    data['date'] = date;
+    data['court'] = courtId;
+    data['from'] = fromTime;
+    data['to'] = toTime;
+
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString(Constant.prefsUserAccessTokenKey) ?? "";
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Authorization": "Bearer " + accessToken
+    };
+
+    try {
+      return await BaseCalls.basePostCall(
+          Urls.createReservation, headers, {}, data, (response) async {
+        final responseData = json.decode(response.body);
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          throw HttpException(responseData['error_description']);
+        }
+      });
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
