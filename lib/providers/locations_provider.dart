@@ -59,7 +59,7 @@ class LocationsProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> CreateReservation(
+  Future createReservation(
       String date, String courtId, String fromTime, String toTime) async {
     Map<String, dynamic> data = <String, dynamic>{};
     data['date'] = date;

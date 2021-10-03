@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:i_padeel/constants/app_colors.dart';
+import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
 import 'package:i_padeel/screens/create_reservation/select_time_slot.dart';
 import 'package:i_padeel/screens/discover/widgets/locations_list_item.dart';
+import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
 
 class DiscoverLocationsList extends StatefulWidget {
@@ -30,6 +32,7 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
 
   @override
   Widget build(BuildContext context) {
+    bool isAuth = Provider.of<AuthProvider>(context).isAccountAuthenticated;
     final size = MediaQuery.of(context).size;
     final locations = Provider.of<LocationsProvider>(context).locations;
     final isLoading = Provider.of<LocationsProvider>(context).isLoading;
@@ -113,14 +116,25 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                                     itemBuilder: (context, innerIndex) {
                                       final item = locations[innerIndex];
                                       return GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (ctx) =>
-                                                      SelectTimeSlotWidget(
-                                                        location: item,
-                                                      )));
-                                        },
+                                        onTap: isAuth
+                                            ? () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            SelectTimeSlotWidget(
+                                                              location: item,
+                                                            )));
+                                              }
+                                            : () {
+                                                ShowDialogHelper
+                                                    .showDialogPopup(
+                                                  'Attention',
+                                                  'You must Login First',
+                                                  context,
+                                                  () => Navigator.of(context)
+                                                      .pop(),
+                                                );
+                                              },
                                         child: LocationsListItem(
                                           name: item.name,
                                           card: item.image ?? "",

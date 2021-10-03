@@ -76,11 +76,17 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
     }
 
     try {
-      Provider.of<LocationsProvider>(context).CreateReservation(_selectedDate!,
-          _selectedCourt!.guid, _selectedSLot!.fromTime, _selectedSLot!.toTime);
+      await Provider.of<LocationsProvider>(context, listen: false)
+          .createReservation(
+        _selectedDate!,
+        _selectedCourt!.guid,
+        _selectedSLot!.fromTime,
+        _selectedSLot!.toTime,
+      );
 
       ShowDialogHelper.showDialogPopup("Congratulations",
           "Your reservation has been completed successfully", context, () {
+        Navigator.of(context).pop();
         Navigator.of(context).pop();
       });
     } catch (error) {
@@ -226,12 +232,17 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
                             _resetSelection();
                             return (aDateIsSelected)
                                 ? Container()
-                                : const Center(
-                                    child: Text(
+                                : Center(
+                                    child: Container(
+                                      margin: const EdgeInsets.all(16),
+                                      child: const Text(
                                         'No avaliable slots for that day',
                                         style: TextStyle(
                                             color: AppColors.secondaryColor,
-                                            fontSize: 14)),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                   );
                           } else {
                             return Column(

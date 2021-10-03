@@ -28,24 +28,22 @@ class _SlotsWidgetState extends State<SlotsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            widget.fromTime,
-            style: TextStyle(color: Colors.black, fontSize: 12),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            widget.toTime,
-            style: TextStyle(color: Colors.black, fontSize: 12),
-          )
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          widget.fromTime,
+          style: const TextStyle(color: Colors.black, fontSize: 12),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          widget.toTime,
+          style: const TextStyle(color: Colors.black, fontSize: 12),
+        )
+      ],
     );
   }
 }
