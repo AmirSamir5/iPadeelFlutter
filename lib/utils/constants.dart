@@ -1,5 +1,6 @@
 class Constant {
   static String prefsUserIsVerifiedKey = 'isUserVerified';
+  static String prefsUserKey = 'userKey';
   static String prefsUserMobileKey = 'userMobile';
   static String prefsUserAccessTokenKey = 'userAccessToken';
   static String prefsUserRefreshTokenKey = 'userRefreshToken';
@@ -33,4 +34,8 @@ class Constant {
 
   static String productionPayfortRefundUrl =
       "https://paymentservices.payfort.com/FortAPI/paymentApi";
+
+  static String clientId = 'qQwGRDtrG1VrYl22wIg1Ig4q3hSIpYHxgvodhByI';
+  static String clientSecret =
+      'LRQ3MpxgI3tSLI8P7yg7kJntKL2Iv0WT17JiJmGH10AL7fOs9fG7ZWWcbpB1wnDneznbbcdEUsAnAIDoJnzZhpLXPDWiG8xour3q1ukMpW3wfcdPqSGTivqx3zrfL1XF';
 }

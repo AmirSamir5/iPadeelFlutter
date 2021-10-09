@@ -9,10 +9,6 @@ import 'package:i_padeel/utils/urls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
-  final String clientId = 'qQwGRDtrG1VrYl22wIg1Ig4q3hSIpYHxgvodhByI';
-  final String clientSecret =
-      'LRQ3MpxgI3tSLI8P7yg7kJntKL2Iv0WT17JiJmGH10AL7fOs9fG7ZWWcbpB1wnDneznbbcdEUsAnAIDoJnzZhpLXPDWiG8xour3q1ukMpW3wfcdPqSGTivqx3zrfL1XF';
-
   String _deviceId = "";
   String _deviceOs = "";
   BuildContext? _context;
@@ -29,6 +25,17 @@ class AuthProvider with ChangeNotifier {
 
   void setIsAccountVerified(bool isVerified) {
     _isAccountVerified = isVerified;
+  }
+
+  Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString(Constant.prefsUserAccessTokenKey);
+    if (token != "" && token != null) {
+      _isAccountAuthenticated = true;
+      return true;
+    }
+    _isAccountAuthenticated = false;
+    return false;
   }
 
   Future<void> checkAuthentication() async {
@@ -73,8 +80,8 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> login(String userName, String password) async {
     Map<String, dynamic> data = <String, dynamic>{};
-    data['client_id'] = clientId;
-    data['client_secret'] = clientSecret;
+    data['client_id'] = Constant.clientId;
+    data['client_secret'] = Constant.clientSecret;
     data['grant_type'] = 'password';
     data['username'] = userName;
     data['password'] = password;

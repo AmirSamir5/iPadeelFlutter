@@ -4,7 +4,7 @@ import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
 import 'package:i_padeel/screens/create_reservation/select_time_slot.dart';
-import 'package:i_padeel/screens/discover/widgets/locations_list_item.dart';
+import 'package:i_padeel/screens/home/widgets/locations_list_item.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
 

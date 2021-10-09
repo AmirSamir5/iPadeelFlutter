@@ -24,7 +24,7 @@ abstract class PageHelper {
           key: pageBuilder.scaffoldKey,
           backgroundColor: Colors.transparent,
           extendBodyBehindAppBar: pageBuilder.extendbody,
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: (pageBuilder.appbar)
               ? AppBar(
                   primary: true,

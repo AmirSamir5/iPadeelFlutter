@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:i_padeel/screens/discover/widgets/discover_button_widget.dart';
-import 'package:i_padeel/screens/discover/widgets/discover_locations_list.dart';
+import 'package:i_padeel/screens/home/widgets/discover_button_widget.dart';
+import 'package:i_padeel/screens/home/widgets/discover_locations_list.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 
-class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  final Function(BuildContext)? returnContext;
+  const HomeScreen({Key? key, this.returnContext}) : super(key: key);
 
   @override
-  _DiscoverScreenState createState() => _DiscoverScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> with PageHelper {
+class _HomeScreenState extends State<HomeScreen> with PageHelper {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  bool _isInit = true;
+
+  @override
+  void initState() {
+    if (_isInit) {
+      _isInit = false;
+      if (widget.returnContext == null) return;
+      widget.returnContext!(context);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildPage(

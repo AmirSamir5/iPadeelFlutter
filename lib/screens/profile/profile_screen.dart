@@ -4,6 +4,7 @@ import 'package:i_padeel/utils/page_helper.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
+  static const routeName = '/Profile_Screen';
   final Function(BuildContext)? returnContext;
   const ProfileScreen({Key? key, this.returnContext}) : super(key: key);
 
@@ -33,13 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> with PageHelper {
         scaffoldKey: _scaffoldkey,
         appBarTitle: 'Profile',
         context: context,
-        leading: IconButton(
-          onPressed: () => SlideDrawer.of(context)?.toggle(),
-          icon: const Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-        ),
         body: Container(),
       ),
     );

@@ -3,8 +3,8 @@ import 'package:i_padeel/constants/app_colors.dart';
 
 import 'custom_input_field.dart';
 
-class PasswordInput extends StatelessWidget {
-  const PasswordInput({
+class CustomPasswordInput extends StatelessWidget {
+  const CustomPasswordInput({
     Key? key,
     required this.passwordController,
     required this.obscureText,
@@ -14,6 +14,7 @@ class PasswordInput extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.showLabelText = false,
     this.isKeyboardDigitsOnly = false,
+    this.showPrefixIcon = true,
   }) : super(key: key);
 
   final TextEditingController passwordController;
@@ -24,6 +25,7 @@ class PasswordInput extends StatelessWidget {
   final bool showLabelText;
   final TextInputType keyboardType;
   final bool isKeyboardDigitsOnly;
+  final bool showPrefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,9 @@ class PasswordInput extends StatelessWidget {
           color: AppColors.hintTextColor,
         ),
       ),
-      prefixIcon: const Icon(Icons.lock, color: AppColors.hintTextColor),
+      prefixIcon: showPrefixIcon
+          ? const Icon(Icons.lock, color: AppColors.hintTextColor)
+          : null,
       isKeyboardDigitsOnly: isKeyboardDigitsOnly,
       validateEmptyString: true,
     );

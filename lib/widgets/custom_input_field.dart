@@ -100,10 +100,10 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
               Text(
                 widget.labelText!,
                 style: const TextStyle(
-                  fontSize: 17,
+                  fontSize: 16,
                   fontFamily: 'Roboto-Medium',
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               _textFormField(),

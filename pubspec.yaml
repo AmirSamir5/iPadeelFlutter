@@ -51,6 +51,7 @@ dependencies:
   package_info: ^2.0.2
   validators: ^3.0.0
   optimized_cached_image: ^3.0.0
+  image_picker: ^0.8.4+2
   
    
 

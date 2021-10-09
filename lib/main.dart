@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/reservations_provider.dart';
+import 'package:i_padeel/providers/user_provider.dart';
+import 'package:i_padeel/screens/login&signup/signup_screen.dart';
+import 'package:i_padeel/screens/profile/profile_screen.dart';
 import 'package:i_padeel/screens/reservationsList/reservations_list_screen.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
 import 'package:i_padeel/providers/avaliable_slots_provider.dart';
@@ -19,6 +22,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
+          create: (ctx) => UserProvider(null),
+          update: (context, auth, previousMessages) => UserProvider(auth),
+        ),
         ChangeNotifierProvider.value(value: ReservationsProvider()),
         ChangeNotifierProvider.value(value: LocationsProvider()),
         ChangeNotifierProvider.value(value: AvaliableTimeSLotsProvider()),
@@ -55,6 +62,8 @@ class MyApp extends StatelessWidget {
         routes: {
           ReservationsListScreen.routeName: (context) =>
               const ReservationsListScreen(),
+          RegistrationScreen.routeName: (context) => const RegistrationScreen(),
+          ProfileScreen.routeName: (context) => const ProfileScreen(),
         },
       ),
     );

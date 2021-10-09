@@ -12,6 +12,14 @@ class Urls {
     return domain + "o/token/";
   }
 
+  static String refreshToken() {
+    return domain + "o/token/";
+  }
+
+  static String getUserProfile() {
+    return domain + "account/user";
+  }
+
   static String getReservationsList() {
     return domain + "reservation/mob/court";
   }

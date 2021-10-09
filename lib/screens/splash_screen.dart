@@ -92,8 +92,7 @@ class SplashScreen extends StatelessWidget {
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const SideMenuWidget(currentIndex: 2),
+                                builder: (context) => const SideMenuWidget(),
                               ),
                             ),
                             child: Row(
@@ -127,8 +126,7 @@ class SplashScreen extends StatelessWidget {
                             onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const SideMenuWidget(currentIndex: 0),
+                                builder: (context) => const SideMenuWidget(),
                               ),
                             ),
                           ),
