@@ -17,7 +17,9 @@ import 'package:validators/validators.dart' as validator;
 class LoginScreen extends StatefulWidget {
   final Function(BuildContext)? returnContext;
   final Function? loginSuccess;
-  const LoginScreen({Key? key, this.returnContext, this.loginSuccess})
+  final Function? registerSuccess;
+  const LoginScreen(
+      {Key? key, this.returnContext, this.loginSuccess, this.registerSuccess})
       : super(key: key);
 
   @override
@@ -169,8 +171,13 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(RegistrationScreen.routeName),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegistrationScreen(
+                                  registerSuccess: widget.registerSuccess!),
+                            ),
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [

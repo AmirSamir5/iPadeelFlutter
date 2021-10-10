@@ -1,3 +1,4 @@
+import 'package:i_padeel/models/user.dart';
 import 'package:intl/intl.dart';
 
 class Reservation {
@@ -68,71 +69,6 @@ class Reservation {
     DateTime dateTime = DateTime.parse(date);
     DateFormat dateFormat = DateFormat.yMMMd();
     return dateFormat.format(dateTime);
-  }
-}
-
-class User {
-  User({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.phone,
-    this.photo,
-    this.dateOfBirth,
-    this.gender,
-    this.bio,
-    this.address,
-    required this.isVerified,
-    this.status,
-    required this.noOfRes,
-  });
-  late final int id;
-  late final String firstName;
-  late final String lastName;
-  late final String email;
-  late final String phone;
-  late final String? photo;
-  late final String? dateOfBirth;
-  late final String? gender;
-  late final String? bio;
-  late final String? address;
-  late final bool isVerified;
-  late final String? status;
-  late final int noOfRes;
-
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    email = json['email'];
-    phone = json['phone'];
-    photo = json['photo'];
-    dateOfBirth = json['date_of_birth'];
-    gender = json['gender'];
-    bio = json['bio'];
-    address = json['address'];
-    isVerified = json['is_verified'];
-    status = json['status'];
-    noOfRes = json['no_of_res'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['first_name'] = firstName;
-    _data['last_name'] = lastName;
-    _data['email'] = email;
-    _data['phone'] = phone;
-    _data['photo'] = photo;
-    _data['date_of_birth'] = dateOfBirth;
-    _data['gender'] = gender;
-    _data['bio'] = bio;
-    _data['address'] = address;
-    _data['is_verified'] = isVerified;
-    _data['status'] = status;
-    _data['no_of_res'] = noOfRes;
-    return _data;
   }
 }
 

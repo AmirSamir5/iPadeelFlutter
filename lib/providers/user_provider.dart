@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:i_padeel/models/reservation.dart';
+import 'package:i_padeel/models/user.dart';
 import 'package:i_padeel/network/base_calls.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/utils/constants.dart';
@@ -24,19 +25,19 @@ class UserProvider with ChangeNotifier {
     String accessToken =
         prefs.getString(Constant.prefsUserAccessTokenKey) as String;
     try {
-      await BaseCalls.basePostCall(Urls.getUserProfile(), {
+      await BaseCalls.baseGetCall(Urls.getUserProfile(), {}, {
         "Accept": "application/json",
         "Authorization": "Bearer " + accessToken
-      }, {}, {}, (response) async {
+      }, (response) async {
         if (response.statusCode == 200) {
           final extractData =
               json.decode(utf8.decode(response.bodyBytes))['user'];
           _user = User.fromJson(extractData);
           saveUserData(extractData, prefs);
-          if (_user != null && user!.isVerified) {
+          if (_user != null && user!.isVerified!) {
             prefs.setBool(Constant.prefsUserIsVerifiedKey, true);
           }
-          _auth!.setIsAccountVerified(_user!.isVerified);
+          _auth!.setIsAccountVerified(_user!.isVerified!);
         } else if (response.statusCode == 401) {
           throw const HttpException('401');
         } else if (response.statusCode == 500) {

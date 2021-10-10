@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:i_padeel/models/reservation.dart';
 import 'package:i_padeel/screens/reservationsList/reservation_cell_bottom.dart';
+import 'package:i_padeel/utils/urls.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class ReservationsCell extends StatelessWidget {
@@ -35,8 +36,9 @@ class ReservationsCell extends StatelessWidget {
                   height: 300,
                   child: OptimizedCacheImage(
                     fit: BoxFit.cover,
-                    imageUrl: reservation.location.image ??
-                        "https://images.unsplash.com/photo-1499510318569-1a3d67dc3976?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=928&q=80",
+                    imageUrl: Urls.domain +
+                        (reservation.location.image ??
+                            "https://images.unsplash.com/photo-1499510318569-1a3d67dc3976?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=928&q=80"),
                     placeholder: (context, url) => LinearProgressIndicator(
                       backgroundColor: Colors.transparent,
                       valueColor: AlwaysStoppedAnimation<Color>(

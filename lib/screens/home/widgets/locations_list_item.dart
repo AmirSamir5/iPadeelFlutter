@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:i_padeel/utils/urls.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class LocationsListItem extends StatefulWidget {
   final String name;
@@ -45,23 +47,15 @@ class _LocationsListItemState extends State<LocationsListItem> {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Stack(fit: StackFit.expand, children: <Widget>[
-          /* CachedNetworkImage(
-            imageUrl: widget._card,
-            placeholder: (context, url) => Center(
-              child: SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: LinearProgressIndicator(
-                  backgroundColor: Colors.transparent,
-                  valueColor: new AlwaysStoppedAnimation<Color>(
-                      Colors.black.withOpacity(0.2)),
-                ),
-              ),
+          OptimizedCacheImage(
+            fit: BoxFit.cover,
+            imageUrl: Urls.domain + (widget.card),
+            placeholder: (context, url) => LinearProgressIndicator(
+              backgroundColor: Colors.transparent,
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(Colors.black.withOpacity(0.2)),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),*/
-          Container(
-            child: Image.asset(
+            errorWidget: (context, url, error) => Image.asset(
               "assets/images/tennisCourt.jpeg",
               fit: BoxFit.fill,
             ),

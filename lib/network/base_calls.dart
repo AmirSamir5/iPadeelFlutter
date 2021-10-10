@@ -34,6 +34,7 @@ class BaseCalls {
       'Connection': 'keep-alive',
       'Accept-Encoding': 'gzip, deflate, br',
     };
+    headers != null ? updatedHeaders.addAll(headers) : 1;
     var modifiedUrl = addHeaderstoUrl(url, updatedQueryStrings);
     var callDetails = CallDetails(
         url: modifiedUrl,
@@ -42,7 +43,7 @@ class BaseCalls {
         body: null);
     try {
       final response = await retry(
-        () => http.get(Uri.parse(modifiedUrl), headers: updatedHeaders).timeout(
+        () => http.get(Uri.parse(modifiedUrl), headers: headers).timeout(
               const Duration(seconds: 15),
             ),
         retryIf: (e) => e is SocketException || e is TimeoutException,

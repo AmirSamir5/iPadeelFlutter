@@ -62,7 +62,6 @@ class MyApp extends StatelessWidget {
         routes: {
           ReservationsListScreen.routeName: (context) =>
               const ReservationsListScreen(),
-          RegistrationScreen.routeName: (context) => const RegistrationScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
         },
       ),

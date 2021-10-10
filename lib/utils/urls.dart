@@ -12,6 +12,10 @@ class Urls {
     return domain + "o/token/";
   }
 
+  static String registerUser() {
+    return domain + "account/register";
+  }
+
   static String refreshToken() {
     return domain + "o/token/";
   }
