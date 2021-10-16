@@ -24,8 +24,7 @@ class User {
     email = json['email'];
     phone = json['phone'];
     photo = json['photo'];
-    dateOfBirth =
-        convertDateFormat(json['date_of_birth']) ?? json['date_of_birth'];
+    dateOfBirth = json['date_of_birth'];
     gender = json['gender'];
     isVerified = json['is_verified'];
     noOfRes = json['no_of_res'];
@@ -46,16 +45,5 @@ class User {
     _data['no_of_res'] = noOfRes;
     _data['rating'] = rating;
     return _data;
-  }
-}
-
-String? convertDateFormat(String? listDate) {
-  try {
-    if (listDate == null) return null;
-    DateTime dateTime = DateTime.parse(listDate);
-    DateFormat dateFormat = DateFormat.yMMMd();
-    return dateFormat.format(dateTime);
-  } catch (_) {
-    return null;
   }
 }

@@ -8,7 +8,9 @@ import 'package:image_picker/image_picker.dart';
 
 class CustomImagePicker extends StatefulWidget {
   final Function(File) pickedImage;
-  const CustomImagePicker({Key? key, required this.pickedImage})
+  final File? oldPickedImage;
+  const CustomImagePicker(
+      {Key? key, this.oldPickedImage, required this.pickedImage})
       : super(key: key);
 
   @override
@@ -18,6 +20,12 @@ class CustomImagePicker extends StatefulWidget {
 class _CustomImagePickerState extends State<CustomImagePicker> {
   final ImagePicker _imagePicker = ImagePicker();
   File? _pickedImage;
+
+  @override
+  void initState() {
+    _pickedImage = widget.oldPickedImage;
+    super.initState();
+  }
 
   void _onImageButtonPressed(ImageSource source) async {
     try {

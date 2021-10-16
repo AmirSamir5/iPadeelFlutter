@@ -120,7 +120,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future registerUser(User user, File? file) async {
-    final prefs = await SharedPreferences.getInstance();
     var url = Uri.parse(Urls.registerUser());
 
     try {
@@ -135,8 +134,8 @@ class AuthProvider with ChangeNotifier {
       request.fields['password'] = user.password ?? "";
       request.fields['gender'] = user.gender ?? "";
       request.fields['dateOfBirth'] = user.dateOfBirth ?? "";
-      request.fields['rating'] = "26";
-      // request.fields['rating'] = user.rating.toString();
+      request.fields['rating'] =
+          (user.rating == null) ? "26" : user.rating!.id.toString();
 
       if (file != null) {
         var multipartFile1 = await MultipartFile.fromPath(
@@ -155,8 +154,6 @@ class AuthProvider with ChangeNotifier {
               retryIf: (e) => e is SocketException || e is TimeoutException)
           .timeout(const Duration(seconds: 5));
       var responseStr = await response.stream.bytesToString();
-      print(responseStr);
-      print(response.statusCode);
 
       final responseData = json.decode(responseStr);
 

@@ -1,12 +1,17 @@
 import 'dart:io';
-
+import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/models/user.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
+import 'package:i_padeel/utils/urls.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:i_padeel/screens/login&signup/rating_screen.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
+import 'package:i_padeel/widgets/custom_bottom_sheet.dart';
 import 'package:i_padeel/widgets/custom_date_picker.dart';
 import 'package:i_padeel/widgets/custom_gender.dart';
 import 'package:i_padeel/widgets/custom_image_picker.dart';
@@ -17,7 +22,9 @@ import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
   final Function? registerSuccess;
-  const RegistrationScreen({Key? key, required this.registerSuccess})
+  final User? user;
+  GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  RegistrationScreen({Key? key, this.registerSuccess, this.user})
       : super(key: key);
 
   @override
@@ -26,20 +33,62 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen>
     with PageHelper {
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
   User user = User();
   String? _selectedDate;
   String? _selectedGender;
   File? _pickedImage;
   bool obsecureText = true;
-  bool _isLoading = false;
+  bool _isEdit = false;
+  bool _isInit = true;
+  bool _isImageLoading = false;
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _mobileController = TextEditingController();
+
+  @override
+  void initState() {
+    if (_isInit) {
+      if (widget.user != null) {
+        _isEdit = true;
+        user = widget.user!;
+        _firstNameController = TextEditingController(text: user.firstName);
+        _lastNameController = TextEditingController(text: user.lastName);
+        _emailController = TextEditingController(text: user.email);
+        _mobileController = TextEditingController(text: user.phone);
+        _selectedDate = user.dateOfBirth;
+        _selectedGender = widget.user!.gender;
+        setOldImage();
+      }
+      _isInit = false;
+    }
+    super.initState();
+  }
+
+  setOldImage() async {
+    if (user.photo == null) return;
+    _pickedImage = await urlToFile(Urls.domain + user.photo!);
+  }
+
+  Future<File> urlToFile(String imageUrl) async {
+    setState(() {
+      _isImageLoading = true;
+    });
+    var rng = Random();
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    File file = File(tempPath + (rng.nextInt(100)).toString() + '.png');
+    http.Response response = await http.get(Uri.parse(imageUrl));
+    await file.writeAsBytes(response.bodyBytes);
+    setState(() {
+      _isImageLoading = false;
+    });
+    return file;
+  }
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -77,15 +126,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         );
         return;
       }
-      _registerUser();
-    }
-  }
-
-  Future _registerUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
       user.firstName = _firstNameController.text;
       user.lastName = _lastNameController.text;
       user.email = _emailController.text;
@@ -93,30 +133,18 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       user.dateOfBirth = _selectedDate;
       user.gender = _selectedGender;
       user.phone = _mobileController.text;
-      await Provider.of<AuthProvider>(context, listen: false)
-          .registerUser(user, _pickedImage);
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      widget.registerSuccess!();
-    } on HttpException catch (error) {
-      ShowDialogHelper.showDialogPopup('Error', error.message, context, () {
-        Navigator.of(context).pop();
-      });
-    } on SocketException catch (_) {
-      ShowDialogHelper.showDialogPopup(
-          'Error',
-          'please check your internet connection and try again later',
-          context, () {
-        Navigator.of(context).pop();
-      });
-    } catch (error) {
-      ShowDialogHelper.showDialogPopup(
-          'Authentication Failed', error.toString(), context, () {
-        Navigator.of(context).pop();
-      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RatingsScreen(
+            user: user,
+            registerSuccess: widget.registerSuccess,
+            pickedImage: _pickedImage,
+            isEdit: _isEdit,
+          ),
+        ),
+      );
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   _hideDialog() {
@@ -129,11 +157,12 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   Widget build(BuildContext context) {
     return buildPage(
       PageBuilder(
-        scaffoldKey: _scaffoldkey,
+        scaffoldKey: widget.scaffoldkey,
         extendbody: true,
         context: context,
         body: Container(
           color: AppColors.primaryColor,
+          height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Container(
               margin: const EdgeInsets.all(16),
@@ -141,9 +170,9 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                 children: [
                   Container(
                     margin: const EdgeInsets.all(40),
-                    child: const Text(
-                      'Registration',
-                      style: TextStyle(
+                    child: Text(
+                      _isEdit ? 'Edit Profile' : 'Registration',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontFamily: 'Avenir',
                         fontSize: 25,
@@ -155,9 +184,18 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                     key: _formKey,
                     child: Column(
                       children: [
-                        CustomImagePicker(pickedImage: (pickedImage) {
-                          _pickedImage = pickedImage;
-                        }),
+                        _isImageLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.secondaryColor,
+                                ),
+                              )
+                            : CustomImagePicker(
+                                oldPickedImage: _pickedImage,
+                                pickedImage: (pickedImage) {
+                                  _pickedImage = pickedImage;
+                                },
+                              ),
                         CustomTextInputField(
                           labelText: 'First Name',
                           showLabelText: true,
@@ -188,26 +226,30 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                           controller: _mobileController,
                           keyboardType: TextInputType.phone,
                         ),
-                        CustomPasswordInput(
-                          labelText: 'Password',
-                          showLabelText: true,
-                          passwordController: _passwordController,
-                          obscureText: obsecureText,
-                          showPrefixIcon: false,
-                          callback: () {
-                            setState(() {
-                              obsecureText = !obsecureText;
-                            });
-                          },
-                        ),
+                        _isEdit
+                            ? const SizedBox()
+                            : CustomPasswordInput(
+                                labelText: 'Password',
+                                showLabelText: true,
+                                passwordController: _passwordController,
+                                obscureText: obsecureText,
+                                showPrefixIcon: false,
+                                callback: () {
+                                  setState(() {
+                                    obsecureText = !obsecureText;
+                                  });
+                                },
+                              ),
                         CustomDatePickerWidget(
                           title: 'Date Of Birth',
                           selectedDate: (selectedDate) {
                             _selectedDate = selectedDate;
                             _removeFocus();
                           },
+                          oldDate: _selectedDate,
                         ),
                         CustomGenderWidget(
+                          oldGenederSelected: user.gender,
                           selectedGender: (selectedGender) {
                             _selectedGender = selectedGender;
                             _removeFocus();
@@ -217,16 +259,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.secondaryColor,
-                          ),
-                        )
-                      : CustomTextButton(
-                          text: 'Register',
-                          onPressed: () => _saveForm(),
-                        ),
+                  CustomTextButton(
+                    text: 'Next',
+                    onPressed: () => _saveForm(),
+                  ),
                 ],
               ),
             ),

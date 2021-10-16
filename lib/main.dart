@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
+import 'package:i_padeel/providers/ratings_provider.dart';
 import 'package:i_padeel/providers/reservations_provider.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/login&signup/signup_screen.dart';
@@ -23,12 +24,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: AuthProvider()),
         ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
-          create: (ctx) => UserProvider(null),
-          update: (context, auth, previousMessages) => UserProvider(auth),
-        ),
+            create: (ctx) => UserProvider(null),
+            update: (context, auth, previous) => previous!..updates(auth)),
         ChangeNotifierProvider.value(value: ReservationsProvider()),
         ChangeNotifierProvider.value(value: LocationsProvider()),
         ChangeNotifierProvider.value(value: AvaliableTimeSLotsProvider()),
+        ChangeNotifierProvider.value(value: RatingsProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

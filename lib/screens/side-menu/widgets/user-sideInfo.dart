@@ -48,7 +48,8 @@ class _UserSideInfoState extends State<UserSideInfo> {
                   valueColor: AlwaysStoppedAnimation<Color>(
                       Colors.black.withOpacity(0.2)),
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) =>
+                    Image.asset('assets/images/user-profile.png'),
               ),
             ),
             const SizedBox(

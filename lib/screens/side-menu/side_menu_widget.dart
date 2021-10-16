@@ -34,7 +34,6 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
   bool _isChangingStatus = false;
   bool isAuth = false;
   bool _isInit = true;
-  User? user;
 
   @override
   void initState() {
@@ -44,8 +43,9 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
             await Provider.of<AuthProvider>(context, listen: false)
                 .isLoggedIn();
         if (isLoggedIn) {
-          user = await Provider.of<UserProvider>(context, listen: false)
+          var user = await Provider.of<UserProvider>(context, listen: false)
               .getUserData();
+          if (user == null) await _getUserProfile();
         }
         checkCurrentIndex();
       });
@@ -85,8 +85,6 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
     });
     try {
       await Provider.of<UserProvider>(context, listen: false).getUserProfile();
-      user =
-          await Provider.of<UserProvider>(context, listen: false).getUserData();
     } on HttpException catch (error) {
       if (error.message == '401') {
         RefreshTokenHelper.refreshToken(
@@ -111,6 +109,9 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
         Navigator.of(context).pop();
       });
     }
+    setState(() {
+      _isChangingStatus = false;
+    });
   }
 
   void loginOrRegisterSuccess() async {
@@ -150,9 +151,19 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                 curve: Curves.easeInOut,
                 backgroundColor: Colors.black,
                 headDrawer: isAuth
-                    ? UserSideInfo(
-                        user: user!,
-                      )
+                    ? Consumer<UserProvider>(
+                        builder: (context, userProvider, _) {
+                        return userProvider.user != null
+                            ? UserSideInfo(
+                                user: userProvider.user!,
+                              )
+                            : Container(
+                                padding: const EdgeInsets.only(right: 32),
+                                child: Image.asset(
+                                  'assets/images/logo-white.png',
+                                ),
+                              );
+                      })
                     : Container(
                         padding: const EdgeInsets.only(right: 32),
                         child: Image.asset(

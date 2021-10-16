@@ -15,10 +15,11 @@ import 'package:slide_drawer/slide_drawer.dart';
 import 'package:validators/validators.dart' as validator;
 
 class LoginScreen extends StatefulWidget {
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final Function(BuildContext)? returnContext;
   final Function? loginSuccess;
   final Function? registerSuccess;
-  const LoginScreen(
+  LoginScreen(
       {Key? key, this.returnContext, this.loginSuccess, this.registerSuccess})
       : super(key: key);
 
@@ -27,7 +28,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with PageHelper {
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
     return buildPage(
       PageBuilder(
         extendbody: true,
-        scaffoldKey: _scaffoldkey,
+        scaffoldKey: widget._scaffoldkey,
         appBarTitle: '',
         context: context,
         leading: IconButton(

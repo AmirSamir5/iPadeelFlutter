@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:i_padeel/constants/app_colors.dart';
 
 class CustomBottomSheetField extends StatefulWidget {
   const CustomBottomSheetField({
@@ -36,7 +37,7 @@ class _CustomBottomSheetFieldState extends State<CustomBottomSheetField> {
                   fontSize: 17,
                   fontFamily: 'Roboto-Medium',
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               _dropDownField(),
@@ -59,6 +60,7 @@ class _CustomBottomSheetFieldState extends State<CustomBottomSheetField> {
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
           border: Border.all(
             color: Colors.white,
           ),
@@ -72,12 +74,12 @@ class _CustomBottomSheetFieldState extends State<CustomBottomSheetField> {
                   const TextStyle(
                     fontSize: 14,
                     fontFamily: 'Roboto-Medium',
-                    color: Colors.black,
+                    color: AppColors.hintTextColor,
                   ),
             ),
             const Icon(
               Icons.arrow_drop_down,
-              color: Colors.black,
+              color: AppColors.hintTextColor,
               size: 27,
             ),
           ],

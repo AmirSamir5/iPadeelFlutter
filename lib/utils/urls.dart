@@ -24,8 +24,16 @@ class Urls {
     return domain + "account/user";
   }
 
+  static String editUserProfile() {
+    return domain + "account/user";
+  }
+
   static String getReservationsList() {
     return domain + "reservation/mob/court";
+  }
+
+  static String getRatings() {
+    return domain + "lookup/rating";
   }
 
   static String getAvaliableSlotsForDay(String locationId) {

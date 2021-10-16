@@ -23,7 +23,7 @@ class _CustomAuthScreenState extends State<CustomAuthScreen> {
                   authResult.connectionState == ConnectionState.waiting
                       ? const CircularProgressIndicator(
                           backgroundColor: AppColors.secondaryColor)
-                      : const LoginScreen(),
+                      : LoginScreen(),
             );
     });
   }

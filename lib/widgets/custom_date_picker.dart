@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:i_padeel/constants/app_colors.dart';
+import 'package:i_padeel/utils/date_converter.dart';
 import 'package:intl/intl.dart';
 
 class CustomDatePickerWidget extends StatefulWidget {
   final String title;
+  final String? oldDate;
   final Function(String) selectedDate;
 
   const CustomDatePickerWidget({
     Key? key,
     required this.title,
     required this.selectedDate,
+    this.oldDate,
   }) : super(key: key);
   @override
   _CustomDatePickerWidgetState createState() => _CustomDatePickerWidgetState();
@@ -18,6 +21,14 @@ class CustomDatePickerWidget extends StatefulWidget {
 
 class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
   String? _formatted;
+  String? _displayedDate;
+
+  @override
+  void initState() {
+    _formatted = widget.oldDate;
+    _displayedDate = DateConverter.convertDateFormat(_formatted);
+    super.initState();
+  }
 
   Future _selectDateOfBirth(BuildContext context) async {
     final DateTime? pickedDate = await DatePicker.showDatePicker(context,
@@ -32,6 +43,7 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
     } else {
       setState(() {
         _formatted = formater.format(pickedDate);
+        _displayedDate = DateConverter.convertDateFormat(_formatted);
         widget.selectedDate(_formatted!);
       });
     }
@@ -68,13 +80,13 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                 children: <Widget>[
                   const Icon(
                     Icons.date_range,
-                    color: AppColors.primaryColor,
+                    color: AppColors.hintTextColor,
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    _formatted ?? 'No Date Choosen!',
+                    _displayedDate ?? 'No Date Choosen!',
                     style: const TextStyle(
-                      color: AppColors.primaryColor,
+                      color: AppColors.hintTextColor,
                       fontSize: 12,
                       fontFamily: 'Roboto-Medium',
                       fontWeight: FontWeight.w500,

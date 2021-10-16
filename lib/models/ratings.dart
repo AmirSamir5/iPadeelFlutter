@@ -7,10 +7,12 @@ class Ratings {
   int? id;
   String? name;
   Division? division;
+  String? description;
 
   Ratings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    description = json['description'];
     division = Division.fromJson(json['division']);
   }
 
@@ -19,6 +21,7 @@ class Ratings {
     _data['id'] = id;
     _data['name'] = name;
     if (division != null) _data['division'] = division!.toJson();
+    _data['description'] = description;
     return _data;
   }
 }

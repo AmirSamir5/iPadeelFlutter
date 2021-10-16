@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomGenderWidget extends StatefulWidget {
+  final String? oldGenederSelected;
   final Function(String) selectedGender;
 
-  const CustomGenderWidget({Key? key, required this.selectedGender})
+  const CustomGenderWidget(
+      {Key? key, this.oldGenederSelected, required this.selectedGender})
       : super(key: key);
 
   @override
@@ -12,6 +14,13 @@ class CustomGenderWidget extends StatefulWidget {
 
 class _CustomGenderWidgetState extends State<CustomGenderWidget> {
   String? selectedRadioTile;
+
+  @override
+  void initState() {
+    selectedRadioTile = widget.oldGenederSelected;
+    super.initState();
+  }
+
   setSelectedRadioTile(String val) {
     setState(() {
       selectedRadioTile = val;
