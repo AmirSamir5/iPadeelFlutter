@@ -1,10 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:i_padeel/constants/app_colors.dart';
 import 'dart:ui' as ui;
 
 import 'package:i_padeel/models/reservation.dart';
+import 'package:i_padeel/network/refresh_token.dart';
+import 'package:i_padeel/providers/reservations_provider.dart';
 import 'package:i_padeel/screens/reservationsList/reservation_cell_bottom.dart';
+import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/utils/urls.dart';
+import 'package:i_padeel/widgets/custom_text_button.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
+import 'package:provider/provider.dart';
 
 class ReservationsCell extends StatelessWidget {
   final Reservation reservation;
@@ -18,7 +26,7 @@ class ReservationsCell extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
-        height: 420,
+        height: 500,
         color: Colors.black,
         child: Stack(
           fit: StackFit.expand,
@@ -50,7 +58,7 @@ class ReservationsCell extends StatelessWidget {
                 ),
               ),
             ),
-            ReservationBottomWidget(reservation, index)
+            ReservationBottomWidget(reservation, index),
           ],
         ),
       ),
@@ -71,6 +79,44 @@ class ReservationBottomWidget extends StatefulWidget {
 }
 
 class _ReservationBottomWidgetState extends State<ReservationBottomWidget> {
+  bool _isCancelLoading = false;
+
+  Future<void> _cancelReservation() async {
+    setState(() {
+      _isCancelLoading = true;
+    });
+    try {
+      await Provider.of<ReservationsProvider>(context, listen: false)
+          .deleteReservations(widget.reservation.guid);
+    } on HttpException catch (error) {
+      if (error.message == '401') {
+        RefreshTokenHelper.refreshToken(
+          context: context,
+          successFunc: () {
+            _cancelReservation();
+          },
+        );
+      } else {
+        ShowDialogHelper.showDialogPopup('Error!', error.message, context, () {
+          Navigator.of(context).pop();
+        });
+      }
+    } on SocketException catch (_) {
+      ShowDialogHelper.showDialogPopup("Error",
+          "Please check your internet connection and try again", context, () {
+        Navigator.of(context).pop();
+      });
+    } catch (error) {
+      ShowDialogHelper.showDialogPopup(
+          "Error", "Sorry, an unexpected error has occurred.", context, () {
+        Navigator.of(context).pop();
+      });
+    }
+    setState(() {
+      _isCancelLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -110,6 +156,28 @@ class _ReservationBottomWidgetState extends State<ReservationBottomWidget> {
                           color: Colors.white,
                         ),
                         ReservationRestaurantBottomDetails(widget.reservation),
+                        _isCancelLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.red,
+                                ),
+                              )
+                            : CustomTextButton(
+                                text: 'Cancel Reservation',
+                                margin: 0,
+                                color: Colors.red,
+                                icon: const Icon(
+                                  Icons.cancel,
+                                  color: Colors.white,
+                                ),
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Ubuntu',
+                                ),
+                                onPressed: () => _cancelReservation(),
+                              ),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),

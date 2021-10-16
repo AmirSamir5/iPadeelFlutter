@@ -32,6 +32,10 @@ class Urls {
     return domain + "reservation/mob/court";
   }
 
+  static String deleteReservations(String resId) {
+    return domain + "reservation/cancel?res_id=$resId";
+  }
+
   static String getRatings() {
     return domain + "lookup/rating";
   }

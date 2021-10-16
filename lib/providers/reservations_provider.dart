@@ -61,4 +61,42 @@ class ReservationsProvider with ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> deleteReservations(String resId) async {
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
+
+    String url = Urls.deleteReservations(resId);
+
+    try {
+      if (accessToken == null) {
+        throw const HttpException('Something Went Wrong!');
+      }
+      final response = await retry(
+          () => http.delete(Uri.parse(url), headers: {
+                "Accept": "application/json",
+                "Authorization": "Bearer " + accessToken
+              }).timeout(
+                const Duration(
+                  seconds: 15,
+                ),
+              ),
+          retryIf: (e) => e is SocketException || e is TimeoutException);
+      final responseData = json.decode(response.body);
+      print(responseData);
+
+      if (response.statusCode == 200) {
+        _reservationsList.removeWhere((element) => element.guid == resId);
+        notifyListeners();
+      } else if (response.statusCode == 401) {
+        throw const HttpException('401');
+      } else if (response.statusCode == 500) {
+        throw const HttpException("Sorry, an unexpected error has occurred.");
+      } else {
+        throw HttpException(json.decode(response.body)['detail']);
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

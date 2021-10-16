@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/models/reservation.dart';
+import 'package:i_padeel/widgets/custom_text_button.dart';
 
 class ReservationRestaurantBottomDetails extends StatelessWidget {
   final Reservation reservation;
@@ -43,7 +44,7 @@ class ReservationRestaurantBottomDetails extends StatelessWidget {
                 ],
               ),
               ReservationSpecificDetail(
-                icon: Icons.mobile_friendly,
+                icon: Icons.mobile_screen_share,
                 detailsText: reservation.mobile,
               ),
             ],

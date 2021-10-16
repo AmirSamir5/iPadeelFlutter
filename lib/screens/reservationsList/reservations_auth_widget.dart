@@ -21,7 +21,6 @@ class _ReservationsAuthenticatedWidgetState
     extends State<ReservationsAuthenticatedWidget> {
   bool _isInit = true;
   bool _isLoading = true;
-  List<Reservation> _reservationsList = [];
 
   @override
   void didChangeDependencies() {
@@ -36,9 +35,6 @@ class _ReservationsAuthenticatedWidgetState
     try {
       await Provider.of<ReservationsProvider>(context, listen: false)
           .loadReservations();
-      _reservationsList =
-          Provider.of<ReservationsProvider>(context, listen: false)
-              .reservationsList;
     } on HttpException catch (error) {
       if (error.message == '401') {
         RefreshTokenHelper.refreshToken(
@@ -78,24 +74,28 @@ class _ReservationsAuthenticatedWidgetState
                 color: AppColors.secondaryColor,
               ),
             )
-          : _reservationsList.isEmpty
-              ? Center(
-                  child: Text(
-                    'No Reservations Available',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                )
-              : ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return ReservationsCell(
-                      _reservationsList[index],
-                      index,
+          : Consumer<ReservationsProvider>(
+              builder: (context, reservationProv, _) {
+              var reservationsList = reservationProv.reservationsList;
+              return reservationsList.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No Reservations Available',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemBuilder: (ctx, index) {
+                        return ReservationsCell(
+                          reservationsList[index],
+                          index,
+                        );
+                      },
+                      itemCount: reservationsList.length,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
                     );
-                  },
-                  itemCount: _reservationsList.length,
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                ),
+            }),
     );
   }
 }
