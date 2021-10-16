@@ -10,7 +10,7 @@ class SlotsWidget extends StatefulWidget {
     required this.toTime,
   });
 
-  final DateFormat formatter = DateFormat('hh-mm a');
+  final DateFormat formatter = DateFormat('hh:mm a');
 
   @override
   State<SlotsWidget> createState() => _SlotsWidgetState();
@@ -19,11 +19,11 @@ class SlotsWidget extends StatefulWidget {
 class _SlotsWidgetState extends State<SlotsWidget> {
   String fromFormattedTime() {
     return widget.formatter
-        .format(DateFormat('HH/mm/ss').parse(widget.fromTime));
+        .format(DateFormat('HH:mm:ss').parse(widget.fromTime));
   }
 
   String toFormattedTime() {
-    return widget.formatter.format(DateFormat('HH/mm/ss').parse(widget.toTime));
+    return widget.formatter.format(DateFormat('HH:mm:ss').parse(widget.toTime));
   }
 
   @override
@@ -33,14 +33,14 @@ class _SlotsWidgetState extends State<SlotsWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          widget.fromTime,
+          fromFormattedTime(),
           style: const TextStyle(color: Colors.black, fontSize: 12),
         ),
         const SizedBox(
           height: 10,
         ),
         Text(
-          widget.toTime,
+          toFormattedTime(),
           style: const TextStyle(color: Colors.black, fontSize: 12),
         )
       ],

@@ -105,34 +105,26 @@ abstract class CustomBottomSheet {
       isDismissible: true,
       backgroundColor: Colors.white,
       context: context,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.3,
-        maxChildSize: 0.94,
-        expand: false,
-        builder: (context, scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              children: [
-                if (showCloseButton)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.close,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
+      builder: (context) => SingleChildScrollView(
+        child: Column(
+          children: [
+            if (showCloseButton)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.close,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                ...items
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            ...items
+          ],
+        ),
       ),
     );
   }

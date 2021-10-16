@@ -12,10 +12,12 @@ import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:i_padeel/utils/shadow_text.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
+import 'package:i_padeel/widgets/custom_bottom_sheet.dart';
 import 'package:i_padeel/widgets/custom_text_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class SelectTimeSlotWidget extends StatefulWidget {
   final Location _location;
@@ -42,19 +44,28 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
 
   Future<void> _selectReservationDate(
       BuildContext context, Function(String?) onSelect) async {
-    DateTime? pickedDate = await DatePicker.showDatePicker(context,
+    DateTime minDate = DateTime.now();
+    DateTime maxDate = DateTime.now().add(const Duration(days: 7));
+    CustomBottomSheet.displayModalBottomSheet(context: context, items: [
+      TableCalendar(
+        firstDay: minDate,
+        lastDay: maxDate,
+        focusedDay: DateTime.now(),
+        daysOfWeekVisible: true,
+        onDaySelected: (selectedDay, focusedDay) {
+          final DateFormat formater = DateFormat('yyyy-MM-dd');
+
+          _formatted = formater.format(selectedDay);
+          onSelect(_formatted);
+          Navigator.of(context).pop();
+        },
+      )
+    ]);
+    /*DateTime? pickedDate = await DatePicker.showDatePicker(context,
         showTitleActions: true,
         currentTime: DateTime.now(),
         minTime: DateTime.now(),
-        maxTime: DateTime(2120));
-    final DateFormat formater = DateFormat('yyyy-MM-dd');
-
-    if (pickedDate == null) {
-      return;
-    } else {
-      _formatted = formater.format(pickedDate);
-      onSelect(_formatted);
-    }
+        maxTime: DateTime(2120));*/
   }
 
   void _getAvaliableSlots() {
