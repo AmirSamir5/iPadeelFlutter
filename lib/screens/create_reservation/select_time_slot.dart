@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/models/avaliable_slots.dart';
 import 'package:i_padeel/models/courts.dart';
 import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/providers/avaliable_slots_provider.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
+import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/create_reservation/slots_widget.dart';
 import 'package:i_padeel/utils/constants.dart';
+import 'package:i_padeel/utils/firebase_phone_auth.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:i_padeel/utils/shadow_text.dart';
@@ -81,9 +82,36 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
     }
 
     final prefs = await SharedPreferences.getInstance();
+
     var accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
     if (accessToken == null) {
       _showErrorDialog("Please login first before making a reservation");
+      return;
+    }
+    var user =
+        await Provider.of<UserProvider>(context, listen: false).getUserData();
+
+    var mobileNumber = user?.phone;
+    if (mobileNumber == null) {
+      ShowDialogHelper.showDialogPopup(
+          "", "Please login before making a reservation", context, () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      });
+      return;
+    }
+
+    var verified = user?.isVerified;
+
+    if (verified == null || verified != true) {
+      ShowDialogHelper.showDialogPopup(
+          "",
+          "Please verify your phone number before making a reservation",
+          context, () {
+        Navigator.of(context).pop();
+
+        FirebasePhoneVerification.instanitiate(phoneNumber: mobileNumber);
+      });
       return;
     }
 
