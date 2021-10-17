@@ -106,9 +106,10 @@ class AuthProvider with ChangeNotifier {
               expiryDate.toIso8601String());
           prefs.setString(Constant.prefsUsername, userName);
           prefs.setString(Constant.prefsPassword, password);
-          // await FirebaseMessagingHelper.getToken();
-          // setPushNotificationsToken();
-          _isAccountAuthenticated = true;
+        
+              // await FirebaseMessagingHelper.getToken();
+              // setPushNotificationsToken();
+              _isAccountAuthenticated = true;
           notifyListeners();
         } else {
           throw HttpException(responseData['error_description']);
