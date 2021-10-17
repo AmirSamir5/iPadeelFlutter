@@ -2,8 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:i_padeel/network/base_calls.dart';
+import 'package:i_padeel/utils/urls.dart';
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:retry/retry.dart';
+import 'package:i_padeel/utils/constants.dart';
 
 enum PhoneAuthState {
   Started,
@@ -17,7 +22,8 @@ enum PhoneAuthState {
 }
 
 class FirebasePhoneVerification {
-  static var _authCredential, phone, actualCode, status;
+  static var _authCredential, actualCode, status;
+  static String phone = "";
   static StreamController<String> statusStream = StreamController.broadcast();
   static StreamController<PhoneAuthState> phoneAuthState =
       StreamController.broadcast();
@@ -71,7 +77,9 @@ class FirebasePhoneVerification {
 
   static void onAuthenticationSuccessful(BuildContext contex) async {
     try {
-      await verify(phone);
+      var countryCodeRemovedPhone = phone.replaceAll("+2", "");
+
+      await verify(countryCodeRemovedPhone);
       addState(PhoneAuthState.FlagsUpdated);
       addStatus('Flag updated');
     } on HttpException catch (_) {
@@ -86,30 +94,23 @@ class FirebasePhoneVerification {
   }
 
   static Future<void> verify(String phoneNumber) async {
-    /* String url = Urls.user_verify;
+    String url = "${Urls.domain}account/verify?mobile=$phoneNumber";
     Map<String, dynamic> verificationData = new Map<String, dynamic>();
-    verificationData['country_code'] = countryCode;
+
     verificationData['mobile'] = phoneNumber;
     try {
-      final response = await retry(
-          () => http
-              .post(Uri.parse(url), body: verificationData)
-              .timeout(Duration(seconds: 5)),
-          retryIf: (e) => e is SocketException || e is TimeoutException);
-      final responseData = json.decode(response.body);
-      print('respone data is: ' + responseData.toString());
-      if (response.statusCode == 200) {
-        _isAccountVerified = true;
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setBool(Constant.prefsUserIsVerifiedKey, true);
-        notifyListeners();
-      } else {
-        throw HttpException(responseData['details']);
-      }
-    } catch (error) {
-      print(error);
-      throw error;
-    }*/
+      await BaseCalls.basePostCall(url, {}, {}, verificationData,
+          (response) async {
+        final responseData = json.decode(response.body);
+        print('respone data is: ' + responseData.toString());
+        if (response.statusCode == 200) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setBool(Constant.prefsUserIsVerifiedKey, true);
+        }
+      });
+    } catch (_) {
+      rethrow;
+    }
   }
 
   static phoneVerificationFailed(FirebaseAuthException authException) {

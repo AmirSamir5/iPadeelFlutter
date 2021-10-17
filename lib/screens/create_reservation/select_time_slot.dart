@@ -102,7 +102,7 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
       return;
     }
 
-    var verified = user?.isVerified;
+    var verified = prefs.getBool(Constant.prefsUserIsVerifiedKey);
 
     if (verified == null || verified != true) {
       ShowDialogHelper.showDialogPopup(

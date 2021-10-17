@@ -204,6 +204,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 child: Form(
                     key: widget._formKey,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         counterStyle: TextStyle(color: Colors.white),
                         enabledBorder: UnderlineInputBorder(

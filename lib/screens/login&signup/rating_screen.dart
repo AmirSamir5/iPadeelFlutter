@@ -8,6 +8,7 @@ import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/ratings_provider.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/login&signup/widgets/rating_item.dart';
+import 'package:i_padeel/screens/profile/verification_screen.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
@@ -92,6 +93,11 @@ class _RatingsScreenState extends State<RatingsScreen> with PageHelper {
           : await Provider.of<AuthProvider>(context, listen: false)
               .registerUser(widget.user, widget.pickedImage);
       Navigator.of(context).popUntil((route) => route.isFirst);
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (ctx) =>
+                VerificationScreen(mobileNumber: widget.user.phone!)));
+      });
       if (!widget.isEdit) widget.registerSuccess!();
     } on HttpException catch (error) {
       ShowDialogHelper.showDialogPopup('Error', error.message, context, () {
