@@ -7,6 +7,7 @@ import 'package:i_padeel/providers/avaliable_slots_provider.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/create_reservation/slots_widget.dart';
+import 'package:i_padeel/screens/profile/verification_screen.dart';
 import 'package:i_padeel/utils/constants.dart';
 import 'package:i_padeel/utils/firebase_phone_auth.dart';
 import 'package:i_padeel/utils/page_builder.dart';
@@ -110,7 +111,8 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
           context, () {
         Navigator.of(context).pop();
 
-        FirebasePhoneVerification.instanitiate(phoneNumber: mobileNumber);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (ctx) => VerificationScreen(mobileNumber: mobileNumber)));
       });
       return;
     }

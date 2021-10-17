@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
@@ -14,6 +15,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
+  Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
