@@ -1,4 +1,4 @@
-package com.example.i_padeel
+package com.noor.iPadel
 
 import io.flutter.embedding.android.FlutterActivity
 

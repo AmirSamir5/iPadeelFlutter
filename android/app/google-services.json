@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "296655427112",
+    "project_id": "ipadel-6ba5e",
+    "storage_bucket": "ipadel-6ba5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296655427112:android:542055adeea0583415471d",
+        "android_client_info": {
+          "package_name": "com.noor.iPadel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296655427112-glqshuopmpao6oe31mnofckrja7pu1s7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noor.iPadel",
+            "certificate_hash": "d93b08405f545586d0831c320fc4a1f747623210"
+          }
+        },
+        {
+          "client_id": "296655427112-175pufdtg7700i2bs99j4cs9u40k8ibd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAjzj07DQb77jorc2J1RdEggcp-8yJcCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296655427112-175pufdtg7700i2bs99j4cs9u40k8ibd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "296655427112-ik049ophm47csu7jv7iequ3ouplql3c0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.noor.iPadel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
