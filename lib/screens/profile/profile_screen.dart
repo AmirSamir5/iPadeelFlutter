@@ -8,6 +8,8 @@ import 'package:i_padeel/network/refresh_token.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/login&signup/signup_screen.dart';
+import 'package:i_padeel/screens/profile/verification_screen.dart';
+import 'package:i_padeel/utils/constants.dart';
 import 'package:i_padeel/utils/date_converter.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
@@ -15,6 +17,7 @@ import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/utils/urls.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/Profile_Screen';
@@ -75,7 +78,9 @@ class _ProfileScreenState extends State<ProfileScreen> with PageHelper {
     );
   }
 
-  Widget _phoneItem(String title, IconData icon) {
+  Future<Widget> _phoneItem(String title, IconData icon) async {
+    final prefs = await SharedPreferences.getInstance();
+    var verified = prefs.getBool(Constant.prefsUserIsVerifiedKey) ?? false;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -97,16 +102,30 @@ class _ProfileScreenState extends State<ProfileScreen> with PageHelper {
                   ),
                 ],
               ),
-              !user!.isVerified!
-                  ? const SizedBox()
-                  : const Text(
-                      'Verify Now!!',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+              !verified
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => VerificationScreen(
+                              mobileNumber: user!.phone!,
+                              onSuccess: () {
+                                _getUserProfile();
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Verify Now!!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     )
+                  : const SizedBox()
             ],
           ),
         ),
@@ -269,9 +288,27 @@ class _ProfileScreenState extends State<ProfileScreen> with PageHelper {
                               user!.email ?? "",
                               Icons.email,
                             ),
-                            _phoneItem(
-                              user!.phone ?? "",
-                              Icons.phone,
+                            FutureBuilder(
+                              future: _phoneItem(
+                                user!.phone ?? "",
+                                Icons.phone,
+                              ),
+                              initialData: SizedBox(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                    backgroundColor: AppColors.secondaryColor,
+                                  ));
+                                }
+                                if (snapshot.hasData) {
+                                  return snapshot.data;
+                                }
+
+                                return Container();
+                              },
                             ),
                             _profileItem(
                               DateConverter.convertDateFormat(
