@@ -8,9 +8,10 @@ import 'package:i_padeel/utils/firebase_phone_auth.dart';
 class VerificationScreen extends StatefulWidget {
   String _mobileNumber;
   final _formKey = GlobalKey<FormState>();
-  final Function? _onSuccess ;
+  final Function? _onSuccess;
   VerificationScreen({required String mobileNumber, Function? onSuccess})
-      : _mobileNumber = mobileNumber,_onSuccess = onSuccess;
+      : _mobileNumber = mobileNumber,
+        _onSuccess = onSuccess;
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
 }
@@ -50,7 +51,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 ok();
-                widget._onSuccess != null?widget._onSuccess!(): 1;
+                widget._onSuccess != null ? widget._onSuccess!() : 1;
                 _isLoading = false;
               },
             )
@@ -224,6 +225,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         labelStyle: TextStyle(color: Colors.white),
                       ),
                       keyboardType: TextInputType.number,
+                      keyboardAppearance: Brightness.light,
                       textInputAction: TextInputAction.done,
                       cursorColor: Colors.white,
                       maxLength: 6,
