@@ -5,7 +5,8 @@ import 'package:slide_drawer/slide_drawer.dart';
 
 class NotificationsScreen extends StatefulWidget {
   final Function(BuildContext)? returnContext;
-  const NotificationsScreen({Key? key, this.returnContext}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  NotificationsScreen({Key? key, this.returnContext}) : super(key: key);
 
   @override
   _NotificationsScreenState createState() => _NotificationsScreenState();
@@ -13,7 +14,6 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen>
     with PageHelper {
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   bool _isInit = true;
 
   @override
@@ -30,7 +30,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
   Widget build(BuildContext context) {
     return buildPage(
       PageBuilder(
-        scaffoldKey: _scaffoldkey,
+        scaffoldKey: widget.scaffoldkey,
         appBarTitle: 'Notifications',
         context: context,
         leading: IconButton(

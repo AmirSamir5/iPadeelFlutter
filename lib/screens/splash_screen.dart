@@ -44,13 +44,11 @@ class _SplashScreenState extends State<SplashScreen> {
           // setNotificationsToken();
         },
         timeoutFunc: () {
-          setState(() {
-            ShowDialogHelper.showDialogPopup(
-                'Error',
-                'Something went wrong, Please Try Restarting the app!',
-                context, () {
-              Navigator.of(context).pop();
-            });
+          ShowDialogHelper.showDialogPopup(
+              'Error',
+              'Something went wrong, Please Try Restarting the app!',
+              context, () {
+            Navigator.of(context).pop();
           });
         },
       );

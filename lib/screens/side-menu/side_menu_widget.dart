@@ -13,6 +13,7 @@ import 'package:i_padeel/screens/settings/settings_screen.dart';
 import 'package:i_padeel/screens/side-menu/widgets/list_tile_widget.dart';
 import 'package:i_padeel/screens/side-menu/widgets/user-sideInfo.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
+import 'package:i_padeel/widgets/termes_conditions.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 
@@ -58,7 +59,7 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
     setState(() {
       _currentIndex = widget.index;
       switch (_currentIndex) {
-        case 4:
+        case 5:
           childWidget = LoginScreen(
             returnContext: (context) {
               childContext = context;
@@ -245,10 +246,27 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                           });
                         },
                       ),
+                      ListTileWidget(
+                        currentIndex: _currentIndex,
+                        widgetIndex: 4,
+                        title: 'Terms of services',
+                        icon: Icons.announcement,
+                        onTap: () {
+                          setState(() {
+                            _currentIndex = 4;
+                            childWidget = TermsAndConditions(
+                              returnContext: (context) {
+                                childContext = context;
+                                SlideDrawer.of(childContext!)?.close();
+                              },
+                            );
+                          });
+                        },
+                      ),
                       isAuth
                           ? ListTileWidget(
                               currentIndex: _currentIndex,
-                              widgetIndex: 4,
+                              widgetIndex: 5,
                               title: 'Logout',
                               icon: Icons.logout,
                               onTap: () async {
@@ -268,12 +286,12 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                             )
                           : ListTileWidget(
                               currentIndex: _currentIndex,
-                              widgetIndex: 4,
+                              widgetIndex: 5,
                               title: 'Login',
                               icon: Icons.person,
                               onTap: () async {
                                 setState(() {
-                                  _currentIndex = 4;
+                                  _currentIndex = 5;
                                   childWidget = LoginScreen(
                                     returnContext: (context) {
                                       childContext = context;

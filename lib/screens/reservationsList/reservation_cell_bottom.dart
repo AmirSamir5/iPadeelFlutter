@@ -24,8 +24,8 @@ class ReservationRestaurantBottomDetails extends StatelessWidget {
                     detailsText: reservation.date,
                   ),
                   ReservationSpecificDetail(
-                    icon: Icons.assignment,
-                    detailsText: reservation.status,
+                    icon: Icons.mobile_screen_share,
+                    detailsText: reservation.mobile,
                   ),
                 ],
               ),
@@ -42,10 +42,6 @@ class ReservationRestaurantBottomDetails extends StatelessWidget {
                     detailsText: 'EGP ${reservation.cost}',
                   ),
                 ],
-              ),
-              ReservationSpecificDetail(
-                icon: Icons.mobile_screen_share,
-                detailsText: reservation.mobile,
               ),
             ],
           ),
