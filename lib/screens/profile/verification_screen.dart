@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/utils/firebase_phone_auth.dart';
+import 'package:i_padeel/widgets/custom_text_button.dart';
 
 class VerificationScreen extends StatefulWidget {
   String _mobileNumber;
@@ -166,6 +167,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Flexible(
                 flex: 5,
@@ -249,24 +251,20 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         backgroundColor: Colors.white,
                       ),
                     )
-                  : Flexible(
-                      // ignore: sized_box_for_whitespace
-                      child: Container(
-                        height: 55,
-                        color: AppColors.primaryColor.withAlpha(100),
-                        width: 200,
-                        // ignore: deprecated_member_use
-                        child: Center(
-                          child: GestureDetector(
-                            child: const Text(
-                              'Verify',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onTap: () => _saveForm(),
-                          ),
-                        ),
-                      ),
-                    )
+                  : CustomTextButton(
+                      text: 'Verify',
+                      onPressed: () => _saveForm(),
+                    ),
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.all(16),
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Text('Maybe later',
+                        style: Theme.of(context).textTheme.headline2),
+                  ),
+                ),
+              )
             ],
           ),
         ),

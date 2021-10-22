@@ -6,11 +6,14 @@ import 'package:i_padeel/providers/ratings_provider.dart';
 import 'package:i_padeel/providers/reservations_provider.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/login&signup/signup_screen.dart';
+import 'package:i_padeel/screens/main_screen.dart';
 import 'package:i_padeel/screens/profile/profile_screen.dart';
-import 'package:i_padeel/screens/reservationsList/reservations_list_screen.dart';
+import 'package:i_padeel/screens/bookings/reservations_list_screen.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
 import 'package:i_padeel/providers/avaliable_slots_provider.dart';
 import 'package:i_padeel/screens/splash_screen.dart';
+import 'package:i_padeel/screens/tournaments/tournaments_screen.dart';
+import 'package:i_padeel/screens/trainings/trainings_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -47,6 +50,12 @@ class MyApp extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
+            headline2: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Ubuntu',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
             button: TextStyle(
               color: Colors.black,
               fontFamily: 'Helvetica Neue',
@@ -61,11 +70,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const SplashScreen(),
+        home: const MainScreen(),
         routes: {
           ReservationsListScreen.routeName: (context) =>
               const ReservationsListScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
+          TrainingsScreen.routeName: (context) => const TrainingsScreen(),
+          TournamentsScreen.routeName: (context) => const TournamentsScreen(),
         },
       ),
     );

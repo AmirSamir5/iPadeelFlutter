@@ -9,7 +9,7 @@ import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/screens/home/home_screen.dart';
 import 'package:i_padeel/screens/login&signup/login_screen.dart';
 import 'package:i_padeel/screens/notifications/notifications_screen.dart';
-import 'package:i_padeel/screens/settings/settings_screen.dart';
+import 'package:i_padeel/screens/courts/courts_screen.dart';
 import 'package:i_padeel/screens/side-menu/widgets/list_tile_widget.dart';
 import 'package:i_padeel/screens/side-menu/widgets/user-sideInfo.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
@@ -150,7 +150,7 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
               isAuth = snapshot.data ?? false;
               return SlideDrawer(
                 curve: Curves.easeInOut,
-                backgroundColor: Colors.black,
+                backgroundColor: AppColors.primaryColor,
                 headDrawer: isAuth
                     ? Consumer<UserProvider>(
                         builder: (context, userProvider, _) {
@@ -203,24 +203,13 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                       ),
                       ListTileWidget(
                         currentIndex: _currentIndex,
-                        widgetIndex: 1,
+                        widgetIndex: 2,
                         title: 'Courts',
                         icon: Icons.sports,
                         onTap: () {
                           setState(() {
-                            _currentIndex = 1;
-                          });
-                        },
-                      ),
-                      ListTileWidget(
-                        currentIndex: _currentIndex,
-                        widgetIndex: 2,
-                        title: 'Settings',
-                        icon: Icons.settings,
-                        onTap: () {
-                          setState(() {
                             _currentIndex = 2;
-                            childWidget = SettingsScreen(
+                            childWidget = CourtsScreen(
                               returnContext: (context) {
                                 childContext = context;
                                 SlideDrawer.of(childContext!)?.close();

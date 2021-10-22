@@ -8,17 +8,18 @@ abstract class PageHelper {
     return Stack(
       children: [
         Container(
-          decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment(0, 0),
-              colors: [
-                AppColors.primaryColor,
-                Colors.black,
-              ],
-              focal: Alignment.center,
-              radius: 0.8,
-            ),
-          ),
+          color: AppColors.primaryColor,
+          // decoration: const BoxDecoration(
+          //   gradient: RadialGradient(
+          //     center: Alignment(0, 0),
+          //     colors: [
+          //       AppColors.primaryColor,
+          //       Colors.black,
+          //     ],
+          //     focal: Alignment.center,
+          //     radius: 0.8,
+          //   ),
+          // ),
         ),
         Scaffold(
           key: pageBuilder.scaffoldKey,

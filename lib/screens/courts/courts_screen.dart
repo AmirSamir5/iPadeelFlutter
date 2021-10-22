@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 
-class SettingsScreen extends StatefulWidget {
+class CourtsScreen extends StatefulWidget {
   final Function(BuildContext)? returnContext;
-  const SettingsScreen({Key? key, this.returnContext}) : super(key: key);
+  const CourtsScreen({Key? key, this.returnContext}) : super(key: key);
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  _CourtsScreenState createState() => _CourtsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> with PageHelper {
+class _CourtsScreenState extends State<CourtsScreen> with PageHelper {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   bool _isInit = true;
 
@@ -30,8 +31,9 @@ class _SettingsScreenState extends State<SettingsScreen> with PageHelper {
     return buildPage(
       PageBuilder(
         scaffoldKey: _scaffoldkey,
-        appBarTitle: 'Settings',
+        appBarTitle: 'Courts',
         context: context,
+        extendbody: true,
         leading: IconButton(
           onPressed: () => SlideDrawer.of(context)?.toggle(),
           icon: const Icon(
@@ -39,7 +41,14 @@ class _SettingsScreenState extends State<SettingsScreen> with PageHelper {
             color: Colors.white,
           ),
         ),
-        body: Container(),
+        body: Container(
+          color: AppColors.primaryColor,
+          height: MediaQuery.of(context).size.height,
+          child: Image.asset(
+            'assets/images/coming-soon.jpeg',
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

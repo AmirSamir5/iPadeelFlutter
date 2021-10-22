@@ -38,15 +38,15 @@ class _HomeScreenState extends State<HomeScreen> with PageHelper {
             color: Colors.white,
           ),
         ),
-        appBarActions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-          )
-        ],
+        // appBarActions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(
+        //       Icons.search,
+        //       color: Colors.white,
+        //     ),
+        //   )
+        // ],
         scaffoldKey: _scaffoldkey,
         appBarTitle: 'Home',
         context: context,

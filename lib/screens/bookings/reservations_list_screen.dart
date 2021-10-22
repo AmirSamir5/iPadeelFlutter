@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
-import 'package:i_padeel/screens/reservationsList/reservations_auth_widget.dart';
+import 'package:i_padeel/screens/bookings/reservations_auth_widget.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class _ReservationsListScreenState extends State<ReservationsListScreen>
                               )
                             : Center(
                                 child: Text(
-                                  'No Reservations Available',
+                                  'No Bookings Available',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),

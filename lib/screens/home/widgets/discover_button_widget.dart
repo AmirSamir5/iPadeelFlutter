@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
-import 'package:i_padeel/screens/reservationsList/reservations_list_screen.dart';
+import 'package:i_padeel/screens/bookings/reservations_list_screen.dart';
+import 'package:i_padeel/screens/tournaments/tournaments_screen.dart';
+import 'package:i_padeel/screens/trainings/trainings_screen.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -46,13 +48,18 @@ class DiscoverButtonWidget extends StatelessWidget {
                     },
             ),
             GestureDetector(
-              onTap: () => print('training tapped'),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(TrainingsScreen.routeName),
             ),
             GestureDetector(
-              onTap: () => print('tournament tapped'),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(TournamentsScreen.routeName),
             ),
             GestureDetector(
-              onTap: () => print('invite friend tapped'),
+              onTap: () => ShowDialogHelper.showDialogPopup(
+                  'Warning', 'This Feature is coming soon', context, () {
+                Navigator.of(context).pop();
+              }),
             )
           ],
         ),

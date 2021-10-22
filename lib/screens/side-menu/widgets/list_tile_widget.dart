@@ -26,7 +26,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
     return Container(
       color: (widget.currentIndex == widget.widgetIndex)
           ? AppColors.secondaryColor
-          : Colors.black,
+          : AppColors.primaryColor,
       child: ListTile(
         title: Text(widget.title,
             style: TextStyle(

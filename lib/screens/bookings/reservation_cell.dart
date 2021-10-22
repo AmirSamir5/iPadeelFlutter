@@ -7,7 +7,7 @@ import 'dart:ui' as ui;
 import 'package:i_padeel/models/reservation.dart';
 import 'package:i_padeel/network/refresh_token.dart';
 import 'package:i_padeel/providers/reservations_provider.dart';
-import 'package:i_padeel/screens/reservationsList/reservation_cell_bottom.dart';
+import 'package:i_padeel/screens/bookings/reservation_cell_bottom.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/utils/urls.dart';
 import 'package:i_padeel/widgets/custom_text_button.dart';
@@ -224,54 +224,54 @@ class _ReservationTopDetailsState extends State<ReservationTopDetails> {
               maxLines: 2,
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).canvasColor,
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(4),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  widget.status,
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Avenir',
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(3.0, 3.0),
-                        blurRadius: 8.0,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      )
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                ),
-              ),
-            ),
-          ),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(30),
+          //   child: Container(
+          //     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          //     decoration: BoxDecoration(
+          //       color: Theme.of(context).primaryColor,
+          //       gradient: LinearGradient(
+          //         colors: [
+          //           Theme.of(context).primaryColor,
+          //           Theme.of(context).canvasColor,
+          //         ],
+          //         begin: Alignment.centerLeft,
+          //         end: Alignment.centerRight,
+          //       ),
+          //       borderRadius: const BorderRadius.all(
+          //         Radius.circular(4),
+          //       ),
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.black.withOpacity(1),
+          //           spreadRadius: 5,
+          //           blurRadius: 7,
+          //           offset: Offset(0, 3), // changes position of shadow
+          //         ),
+          //       ],
+          //     ),
+          //     child: Center(
+          //       child: Text(
+          //         widget.status,
+          //         style: TextStyle(
+          //           fontSize: 10,
+          //           fontWeight: FontWeight.normal,
+          //           fontFamily: 'Avenir',
+          //           color: Colors.white,
+          //           shadows: [
+          //             Shadow(
+          //               offset: Offset(3.0, 3.0),
+          //               blurRadius: 8.0,
+          //               color: Color.fromARGB(255, 0, 0, 0),
+          //             )
+          //           ],
+          //         ),
+          //         textAlign: TextAlign.center,
+          //         maxLines: 2,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

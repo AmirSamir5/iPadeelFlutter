@@ -87,18 +87,20 @@ class _RatingsScreenState extends State<RatingsScreen> with PageHelper {
       _isRegisteredLoading = true;
     });
     try {
-      widget.isEdit
-          ? await Provider.of<UserProvider>(context, listen: false)
-              .editUserProfile(widget.user, widget.pickedImage)
-          : await Provider.of<AuthProvider>(context, listen: false)
-              .registerUser(widget.user, widget.pickedImage);
+      if (widget.isEdit) {
+        await Provider.of<UserProvider>(context, listen: false)
+            .editUserProfile(widget.user, widget.pickedImage);
+      } else {
+        await Provider.of<AuthProvider>(context, listen: false)
+            .registerUser(widget.user, widget.pickedImage);
+        widget.registerSuccess!();
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (ctx) =>
+                  VerificationScreen(mobileNumber: widget.user.phone!)));
+        });
+      }
       Navigator.of(context).popUntil((route) => route.isFirst);
-      Future.delayed(Duration.zero, () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) =>
-                VerificationScreen(mobileNumber: widget.user.phone!)));
-      });
-      if (!widget.isEdit) widget.registerSuccess!();
     } on HttpException catch (error) {
       ShowDialogHelper.showDialogPopup('Error', error.message, context, () {
         Navigator.of(context).pop();

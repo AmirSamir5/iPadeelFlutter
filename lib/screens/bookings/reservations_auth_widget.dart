@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
-import 'package:i_padeel/models/reservation.dart';
 import 'package:i_padeel/network/refresh_token.dart';
 import 'package:i_padeel/providers/reservations_provider.dart';
-import 'package:i_padeel/screens/reservationsList/reservation_cell.dart';
+import 'package:i_padeel/screens/bookings/reservation_cell.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +79,7 @@ class _ReservationsAuthenticatedWidgetState
               return reservationsList.isEmpty
                   ? Center(
                       child: Text(
-                        'No Reservations Available',
+                        'No Bookings Available',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     )
