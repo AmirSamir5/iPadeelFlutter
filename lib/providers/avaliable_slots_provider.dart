@@ -17,17 +17,17 @@ class AvaliableTimeSLotsProvider with ChangeNotifier {
   bool get failedToLoad => _failedToLoad;
 
   Future<void> fetchLocationSlots(String locationId) async {
-    List<AvailableSlots>? previouslyLoadedSlots =
-        loadedLocationsAvaliableSlots[locationId];
-    if (previouslyLoadedSlots != null) {
-      _locationSLots = previouslyLoadedSlots;
-      notifyListeners();
-      return;
-    }
+    // List<AvailableSlots>? previouslyLoadedSlots =
+    //     loadedLocationsAvaliableSlots[locationId];
+    // if (previouslyLoadedSlots != null) {
+    //   _locationSLots = previouslyLoadedSlots;
+    //   notifyListeners();
+    //   return;
+    // }
 
-    if (_isLoading) {
-      return;
-    }
+    // if (_isLoading) {
+    //   return;
+    // }
     _locationSLots.clear();
     _isLoading = true;
     _failedToLoad = false;

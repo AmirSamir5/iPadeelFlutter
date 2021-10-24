@@ -326,56 +326,76 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
                                       child: ConstrainedBox(
                                         constraints:
                                             const BoxConstraints(maxHeight: 80),
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                slotsForSelectedDay?.length ??
+                                        child: slotsForSelectedDay!.isEmpty
+                                            ? Center(
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.all(16),
+                                                  child: const Text(
+                                                    'No avaliable slots for that day',
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .secondaryColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              )
+                                            : ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: slotsForSelectedDay
+                                                        ?.length ??
                                                     0,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (ctx, index) {
-                                              return GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      _expandedIndex = index;
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (ctx, index) {
+                                                  return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          _expandedIndex =
+                                                              index;
 
-                                                      _selectedSLot =
-                                                          slotsForSelectedDay![
-                                                              _expandedIndex];
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.all(8),
-                                                    padding:
-                                                        const EdgeInsets.all(8),
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          _expandedIndex ==
+                                                          _selectedSLot =
+                                                              slotsForSelectedDay![
+                                                                  _expandedIndex];
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .all(8),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: _expandedIndex ==
                                                                   index
                                                               ? AppColors
                                                                   .secondaryColor
                                                               : Colors.white,
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                        Radius.circular(10),
-                                                      ),
-                                                    ),
-                                                    alignment: Alignment.center,
-                                                    child: SlotsWidget(
-                                                      fromTime:
-                                                          slotsForSelectedDay![
-                                                                  index]
-                                                              .fromTime
-                                                              .toString(),
-                                                      toTime:
-                                                          slotsForSelectedDay![
-                                                                  index]
-                                                              .toTime
-                                                              .toString(),
-                                                    ),
-                                                  ));
-                                            }),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: SlotsWidget(
+                                                          fromTime:
+                                                              slotsForSelectedDay![
+                                                                      index]
+                                                                  .fromTime
+                                                                  .toString(),
+                                                          toTime:
+                                                              slotsForSelectedDay![
+                                                                      index]
+                                                                  .toTime
+                                                                  .toString(),
+                                                        ),
+                                                      ));
+                                                }),
                                       ),
                                     )
                                   ],

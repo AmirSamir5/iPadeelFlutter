@@ -26,7 +26,7 @@ class ReservationsCell extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
-        height: 500,
+        height: 400,
         color: Colors.black,
         child: Stack(
           fit: StackFit.expand,
@@ -162,21 +162,23 @@ class _ReservationBottomWidgetState extends State<ReservationBottomWidget> {
                                   backgroundColor: Colors.red,
                                 ),
                               )
-                            : CustomTextButton(
-                                text: 'Cancel Reservation',
-                                margin: 0,
-                                color: Colors.red,
-                                icon: const Icon(
-                                  Icons.cancel,
-                                  color: Colors.white,
-                                ),
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Ubuntu',
-                                ),
-                                onPressed: () => _cancelReservation(),
-                              ),
+                            : widget.reservation.cancancel
+                                ? CustomTextButton(
+                                    text: 'Cancel Reservation',
+                                    margin: 0,
+                                    color: AppColors.secondaryColor,
+                                    icon: const Icon(
+                                      Icons.cancel,
+                                      color: Colors.black,
+                                    ),
+                                    textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'Ubuntu',
+                                    ),
+                                    onPressed: () => _cancelReservation(),
+                                  )
+                                : const SizedBox(),
                         const SizedBox(height: 16),
                       ],
                     ),
@@ -208,7 +210,7 @@ class _ReservationTopDetailsState extends State<ReservationTopDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 8, right: 8),
+      margin: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

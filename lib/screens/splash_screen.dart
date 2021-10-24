@@ -47,42 +47,43 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                   Flexible(
                     flex: 2,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          const FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Text(
-                              'Discover People',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Ubuntu',
-                                fontSize: 45,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 64, vertical: 16),
-                              child: const Text(
-                                'Browse through enthusiasts and find the right matches for you',
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Ubuntu',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    child: Container(),
+                    // Center(
+                    //   child: Column(
+                    //     children: [
+                    //       const FittedBox(
+                    //         fit: BoxFit.fitWidth,
+                    //         child: Text(
+                    //           'Discover People',
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontFamily: 'Ubuntu',
+                    //             fontSize: 45,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       FittedBox(
+                    //         fit: BoxFit.contain,
+                    //         child: Container(
+                    //           margin: const EdgeInsets.symmetric(
+                    //               horizontal: 64, vertical: 16),
+                    //           child: const Text(
+                    //             'Browse through enthusiasts and find the right matches for you',
+                    //             textAlign: TextAlign.center,
+                    //             maxLines: 2,
+                    //             style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontFamily: 'Ubuntu',
+                    //               fontSize: 18,
+                    //               fontWeight: FontWeight.normal,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                   ),
                   Flexible(
                     flex: 2,

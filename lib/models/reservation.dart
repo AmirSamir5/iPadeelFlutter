@@ -2,19 +2,6 @@ import 'package:i_padeel/models/user.dart';
 import 'package:intl/intl.dart';
 
 class Reservation {
-  Reservation({
-    required this.guid,
-    required this.fromTime,
-    required this.toTime,
-    required this.user,
-    required this.status,
-    required this.mobile,
-    required this.channel,
-    this.paymentMethod,
-    required this.cost,
-    required this.details,
-    required this.location,
-  });
   late final String guid;
   late final String fromTime;
   late final String toTime;
@@ -27,6 +14,7 @@ class Reservation {
   late final int cost;
   late final Details details;
   late final Location location;
+  late final bool cancancel;
 
   Reservation.fromJson(Map<String, dynamic> json) {
     guid = json['guid'];
@@ -41,6 +29,7 @@ class Reservation {
     cost = json['cost'];
     details = Details.fromJson(json['details']);
     location = Location.fromJson(json['location']);
+    cancancel = json['cancancel'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,6 +43,7 @@ class Reservation {
     _data['channel'] = channel;
     _data['payment_method'] = paymentMethod;
     _data['cost'] = cost;
+    _data['cancancel'] = cancancel;
     _data['details'] = details.toJson();
     _data['location'] = location.toJson();
     return _data;
