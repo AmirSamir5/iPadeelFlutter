@@ -89,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: Provider.of<AuthProvider>(context).isLoggedIn(),
+      future: Provider.of<AuthProvider>(context, listen: false).isLoggedIn(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(

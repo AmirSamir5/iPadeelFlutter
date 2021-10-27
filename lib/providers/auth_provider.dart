@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:i_padeel/models/user.dart';
 import 'package:i_padeel/network/base_calls.dart';
+import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/utils/constants.dart';
 import 'package:i_padeel/utils/urls.dart';
 import 'package:retry/retry.dart';
@@ -19,6 +20,13 @@ class AuthProvider with ChangeNotifier {
   BuildContext? _context;
   bool _isAccountVerified = false;
   bool _isAccountAuthenticated = false;
+  UserProvider? _userProvider;
+
+  AuthProvider(this._userProvider);
+
+  void updates(UserProvider userProvider) {
+    _userProvider = userProvider;
+  }
 
   bool get isAccountAuthenticated {
     return _isAccountAuthenticated;
@@ -106,10 +114,11 @@ class AuthProvider with ChangeNotifier {
               expiryDate.toIso8601String());
           prefs.setString(Constant.prefsUsername, userName);
           prefs.setString(Constant.prefsPassword, password);
-        
-              // await FirebaseMessagingHelper.getToken();
-              // setPushNotificationsToken();
-              _isAccountAuthenticated = true;
+
+          // await FirebaseMessagingHelper.getToken();
+          // setPushNotificationsToken();
+          await _userProvider!.getUserProfile();
+          _isAccountAuthenticated = true;
           notifyListeners();
         } else {
           throw HttpException(responseData['error_description']);
