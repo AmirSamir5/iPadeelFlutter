@@ -17,10 +17,8 @@ import 'package:validators/validators.dart' as validator;
 class LoginScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final Function(BuildContext)? returnContext;
-  final Function? loginSuccess;
-  final Function? registerSuccess;
-  LoginScreen(
-      {Key? key, this.returnContext, this.loginSuccess, this.registerSuccess})
+  final Function? resetSideMenu;
+  LoginScreen({Key? key, this.returnContext, this.resetSideMenu})
       : super(key: key);
 
   @override
@@ -64,8 +62,10 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
     });
     try {
       await Provider.of<AuthProvider>(context, listen: false)
-          .login(_emailController.text, _passwordController.text);
-      widget.loginSuccess!();
+          .login(_emailController.text, _passwordController.text, context);
+
+      widget.resetSideMenu!();
+      // Navigator.popUntil(context, (route) => route.isFirst);
     } on HttpException catch (error) {
       ShowDialogHelper.showDialogPopup(
           'Authentication Failed', error.message, context, () {
@@ -175,7 +175,8 @@ class _LoginScreenState extends State<LoginScreen> with PageHelper {
                             context,
                             MaterialPageRoute(
                               builder: (context) => RegistrationScreen(
-                                  registerSuccess: widget.registerSuccess!),
+                                resetSideMenu: widget.resetSideMenu,
+                              ),
                             ),
                           ),
                           child: Row(

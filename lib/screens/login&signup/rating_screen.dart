@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/models/ratings.dart';
 import 'package:i_padeel/models/user.dart';
+import 'package:i_padeel/network/refresh_token.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/ratings_provider.dart';
 import 'package:i_padeel/providers/user_provider.dart';
@@ -18,17 +19,15 @@ import 'package:provider/provider.dart';
 class RatingsScreen extends StatefulWidget {
   final User user;
   final File? pickedImage;
-  final Function? registerSuccess;
-  final Function? editSuccess;
+  final Function? resetSideMenu;
   bool isEdit;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   RatingsScreen({
     Key? key,
     required this.user,
-    this.registerSuccess,
-    this.editSuccess,
     this.isEdit = false,
     this.pickedImage,
+    this.resetSideMenu,
   }) : super(key: key);
 
   @override
@@ -90,18 +89,28 @@ class _RatingsScreenState extends State<RatingsScreen> with PageHelper {
       if (widget.isEdit) {
         await Provider.of<UserProvider>(context, listen: false)
             .editUserProfile(widget.user, widget.pickedImage);
+        Navigator.of(context).popUntil((route) => route.isFirst);
       } else {
         await Provider.of<AuthProvider>(context, listen: false)
-            .registerUser(widget.user, widget.pickedImage);
-        widget.registerSuccess!();
+            .registerUser(widget.user, widget.pickedImage, context);
+        widget.resetSideMenu!();
         Future.delayed(Duration.zero, () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (ctx) =>
                   VerificationScreen(mobileNumber: widget.user.phone!)));
         });
       }
-      Navigator.of(context).popUntil((route) => route.isFirst);
     } on HttpException catch (error) {
+      if (error.message == '403') {
+        RefreshTokenHelper.refreshToken(
+            context: context,
+            successFunc: _registerOrEditUser,
+            timeoutFunc: () => ShowDialogHelper.showDialogPopup(
+                    'Error', error.message, context, () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }));
+      }
       ShowDialogHelper.showDialogPopup('Error', error.message, context, () {
         Navigator.of(context).pop();
         Navigator.of(context).pop();

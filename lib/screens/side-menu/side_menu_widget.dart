@@ -33,26 +33,28 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
   Widget? childWidget;
   BuildContext? childContext;
   bool _isChangingStatus = false;
-  bool isAuth = false;
-  bool _isInit = true;
 
   @override
   void initState() {
-    if (_isInit) {
-      Future.delayed(Duration.zero, () async {
-        bool isLoggedIn =
-            await Provider.of<AuthProvider>(context, listen: false)
-                .isLoggedIn();
-        if (isLoggedIn) {
-          var user = await Provider.of<UserProvider>(context, listen: false)
-              .getUserData();
-          if (user == null) await _getUserProfile();
-        }
-        checkCurrentIndex();
-      });
-    }
-    _isInit = false;
+    Future.delayed(Duration.zero, () async {
+      bool isLoggedIn =
+          await Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+      if (isLoggedIn) {
+        var user = await Provider.of<UserProvider>(context, listen: false)
+            .getUserData();
+        if (user == null) await _getUserProfile();
+      }
+      checkCurrentIndex();
+    });
+
     super.initState();
+  }
+
+  void resetCurrentIndex() {
+    setState(() {
+      _currentIndex = 0;
+      childWidget = null;
+    });
   }
 
   checkCurrentIndex() {
@@ -65,12 +67,7 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
               childContext = context;
               SlideDrawer.of(childContext!)?.close();
             },
-            loginSuccess: () {
-              loginOrRegisterSuccess();
-            },
-            registerSuccess: () {
-              loginOrRegisterSuccess();
-            },
+            resetSideMenu: resetCurrentIndex,
           );
           return;
         default:
@@ -115,21 +112,6 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
     });
   }
 
-  void loginOrRegisterSuccess() async {
-    await _getUserProfile();
-    setState(() {
-      _isChangingStatus = false;
-      _currentIndex = 0;
-      isAuth = true;
-      childWidget = HomeScreen(
-        returnContext: (context) {
-          childContext = context;
-          SlideDrawer.of(childContext!)?.close();
-        },
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return _isChangingStatus
@@ -147,159 +129,164 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                   backgroundColor: AppColors.secondaryColor,
                 ));
               }
-              isAuth = snapshot.data ?? false;
-              return SlideDrawer(
-                curve: Curves.easeInOut,
-                backgroundColor: AppColors.primaryColor,
-                headDrawer: isAuth
-                    ? Consumer<UserProvider>(
-                        builder: (context, userProvider, _) {
-                        return userProvider.user != null
-                            ? UserSideInfo(
-                                user: userProvider.user!,
-                              )
-                            : Container(
-                                padding: const EdgeInsets.only(right: 32),
-                                child: Image.asset(
-                                  'assets/images/logo-white.png',
-                                ),
-                              );
-                      })
-                    : Container(
-                        padding: const EdgeInsets.only(right: 32),
-                        child: Image.asset(
-                          'assets/images/logo-white.png',
+              return Consumer<AuthProvider>(builder: (context, auth, _) {
+                bool isAuth = auth.isAccountAuthenticated;
+                return SlideDrawer(
+                  curve: Curves.easeInOut,
+                  backgroundColor: AppColors.primaryColor,
+                  headDrawer: isAuth
+                      ? Consumer<UserProvider>(
+                          builder: (context, userProvider, _) {
+                          return userProvider.user != null
+                              ? UserSideInfo(
+                                  user: userProvider.user!,
+                                )
+                              : Container(
+                                  padding: const EdgeInsets.only(right: 32),
+                                  child: Image.asset(
+                                    'assets/images/logo-white.png',
+                                  ),
+                                );
+                        })
+                      : Container(
+                          padding: const EdgeInsets.only(right: 32),
+                          child: Image.asset(
+                            'assets/images/logo-white.png',
+                          ),
                         ),
-                      ),
-                duration: const Duration(milliseconds: 200),
-                reverseCurve: Curves.easeInOut,
-                child: childWidget ??
-                    HomeScreen(
-                      returnContext: (context) {
-                        childContext = context;
-                        SlideDrawer.of(childContext!)?.close();
-                      },
-                    ),
-                contentDrawer: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    children: [
-                      ListTileWidget(
-                        currentIndex: _currentIndex,
-                        widgetIndex: 0,
-                        title: 'Home',
-                        icon: Icons.home,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 0;
-                            childWidget = HomeScreen(
-                              returnContext: (context) {
-                                childContext = context;
-                                SlideDrawer.of(childContext!)?.close();
-                              },
-                            );
-                          });
+                  duration: const Duration(milliseconds: 200),
+                  reverseCurve: Curves.easeInOut,
+                  child: childWidget ??
+                      HomeScreen(
+                        returnContext: (context) {
+                          childContext = context;
+                          SlideDrawer.of(childContext!)?.close();
                         },
                       ),
-                      ListTileWidget(
-                        currentIndex: _currentIndex,
-                        widgetIndex: 2,
-                        title: 'Courts',
-                        icon: Icons.sports,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 2;
-                            childWidget = CourtsScreen(
-                              returnContext: (context) {
-                                childContext = context;
-                                SlideDrawer.of(childContext!)?.close();
-                              },
-                            );
-                          });
-                        },
-                      ),
-                      ListTileWidget(
-                        currentIndex: _currentIndex,
-                        widgetIndex: 3,
-                        title: 'Notifications',
-                        icon: Icons.notifications,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 3;
-                            childWidget = NotificationsScreen(
-                              returnContext: (context) {
-                                childContext = context;
-                                SlideDrawer.of(childContext!)?.close();
-                              },
-                            );
-                          });
-                        },
-                      ),
-                      ListTileWidget(
-                        currentIndex: _currentIndex,
-                        widgetIndex: 4,
-                        title: 'Terms of services',
-                        icon: Icons.announcement,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 4;
-                            childWidget = TermsAndConditions(
-                              returnContext: (context) {
-                                childContext = context;
-                                SlideDrawer.of(childContext!)?.close();
-                              },
-                            );
-                          });
-                        },
-                      ),
-                      isAuth
-                          ? ListTileWidget(
-                              currentIndex: _currentIndex,
-                              widgetIndex: 5,
-                              title: 'Logout',
-                              icon: Icons.logout,
-                              onTap: () async {
-                                setState(() {
-                                  _isChangingStatus = true;
-                                });
-                                await Provider.of<AuthProvider>(context,
-                                        listen: false)
-                                    .logoutUser(context);
-                                Future.delayed(const Duration(seconds: 1));
-                                setState(() {
-                                  _isChangingStatus = false;
-                                  _currentIndex = 0;
+                  contentDrawer: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Column(
+                      children: [
+                        ListTileWidget(
+                          currentIndex: _currentIndex,
+                          widgetIndex: 0,
+                          title: 'Home',
+                          icon: Icons.home,
+                          onTap: () {
+                            setState(() {
+                              _currentIndex = 0;
+                              childWidget = HomeScreen(
+                                returnContext: (context) {
+                                  childContext = context;
                                   SlideDrawer.of(childContext!)?.close();
-                                });
-                              },
-                            )
-                          : ListTileWidget(
-                              currentIndex: _currentIndex,
-                              widgetIndex: 5,
-                              title: 'Login',
-                              icon: Icons.person,
-                              onTap: () async {
-                                setState(() {
-                                  _currentIndex = 5;
-                                  childWidget = LoginScreen(
-                                    returnContext: (context) {
-                                      childContext = context;
+                                },
+                              );
+                            });
+                          },
+                        ),
+                        // ListTileWidget(
+                        //   currentIndex: _currentIndex,
+                        //   widgetIndex: 2,
+                        //   title: 'Courts',
+                        //   icon: Icons.sports,
+                        //   onTap: () {
+                        //     setState(() {
+                        //       _currentIndex = 2;
+                        //       childWidget = CourtsScreen(
+                        //         returnContext: (context) {
+                        //           childContext = context;
+                        //           SlideDrawer.of(childContext!)?.close();
+                        //         },
+                        //       );
+                        //     });
+                        //   },
+                        // ),
+                        ListTileWidget(
+                          currentIndex: _currentIndex,
+                          widgetIndex: 3,
+                          title: 'Notifications',
+                          icon: Icons.notifications,
+                          onTap: () {
+                            setState(() {
+                              _currentIndex = 3;
+                              childWidget = NotificationsScreen(
+                                returnContext: (context) {
+                                  childContext = context;
+                                  SlideDrawer.of(childContext!)?.close();
+                                },
+                              );
+                            });
+                          },
+                        ),
+                        ListTileWidget(
+                          currentIndex: _currentIndex,
+                          widgetIndex: 4,
+                          title: 'Terms of services',
+                          icon: Icons.announcement,
+                          onTap: () {
+                            setState(() {
+                              _currentIndex = 4;
+                              childWidget = TermsAndConditions(
+                                returnContext: (context) {
+                                  childContext = context;
+                                  SlideDrawer.of(childContext!)?.close();
+                                },
+                              );
+                            });
+                          },
+                        ),
+                        isAuth
+                            ? ListTileWidget(
+                                currentIndex: _currentIndex,
+                                widgetIndex: 5,
+                                title: 'Logout',
+                                icon: Icons.logout,
+                                onTap: () async {
+                                  ShowDialogHelper.showDialogPopupWithCancel(
+                                      "Confirmation",
+                                      "Are you sure you want to logout?",
+                                      context, () {
+                                    Navigator.of(context).pop();
+                                  }, () async {
+                                    setState(() {
+                                      _isChangingStatus = true;
+                                    });
+                                    await Provider.of<AuthProvider>(context,
+                                            listen: false)
+                                        .logoutUser(context);
+                                    Future.delayed(const Duration(seconds: 1));
+                                    setState(() {
+                                      _isChangingStatus = false;
+                                      _currentIndex = 0;
                                       SlideDrawer.of(childContext!)?.close();
-                                    },
-                                    loginSuccess: () {
-                                      loginOrRegisterSuccess();
-                                    },
-                                    registerSuccess: () {
-                                      loginOrRegisterSuccess();
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                    ],
+                                    });
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                              )
+                            : ListTileWidget(
+                                currentIndex: _currentIndex,
+                                widgetIndex: 5,
+                                title: 'Login / Signup',
+                                icon: Icons.person,
+                                onTap: () async {
+                                  setState(() {
+                                    _currentIndex = 5;
+                                    childWidget = LoginScreen(
+                                      returnContext: (context) {
+                                        childContext = context;
+                                        SlideDrawer.of(childContext!)?.close();
+                                      },
+                                      resetSideMenu: resetCurrentIndex,
+                                    );
+                                  });
+                                },
+                              ),
+                      ],
+                    ),
                   ),
-                ),
-              );
+                );
+              });
             },
           );
   }

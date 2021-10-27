@@ -144,9 +144,7 @@ class _ReservationBottomWidgetState extends State<ReservationBottomWidget> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ReservationTopDetails(
-                          name: widget.reservation.location.name,
-                          status: widget.reservation.status,
-                        ), //ROW Widget
+                            reservation: widget.reservation), //ROW Widget
                         const SizedBox(
                           height: 8,
                         ),
@@ -176,7 +174,17 @@ class _ReservationBottomWidgetState extends State<ReservationBottomWidget> {
                                       fontSize: 16,
                                       fontFamily: 'Ubuntu',
                                     ),
-                                    onPressed: () => _cancelReservation(),
+                                    onPressed: () {
+                                      ShowDialogHelper.showDialogPopupWithCancel(
+                                          "Confirmation",
+                                          "Are you sure you want to cancel?",
+                                          context, () {
+                                        Navigator.of(context).pop();
+                                      }, () async {
+                                        _cancelReservation();
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
                                   )
                                 : const SizedBox(),
                         const SizedBox(height: 16),
@@ -194,12 +202,10 @@ class _ReservationBottomWidgetState extends State<ReservationBottomWidget> {
 }
 
 class ReservationTopDetails extends StatefulWidget {
-  final String name;
-  final String status;
+  final Reservation reservation;
 
   ReservationTopDetails({
-    required this.name,
-    required this.status,
+    required this.reservation,
   });
 
   @override
@@ -216,7 +222,7 @@ class _ReservationTopDetailsState extends State<ReservationTopDetails> {
         children: <Widget>[
           Expanded(
             child: Text(
-              widget.name,
+              widget.reservation.location.name,
               style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Ubuntu',
@@ -226,54 +232,54 @@ class _ReservationTopDetailsState extends State<ReservationTopDetails> {
               maxLines: 2,
             ),
           ),
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(30),
-          //   child: Container(
-          //     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          //     decoration: BoxDecoration(
-          //       color: Theme.of(context).primaryColor,
-          //       gradient: LinearGradient(
-          //         colors: [
-          //           Theme.of(context).primaryColor,
-          //           Theme.of(context).canvasColor,
-          //         ],
-          //         begin: Alignment.centerLeft,
-          //         end: Alignment.centerRight,
-          //       ),
-          //       borderRadius: const BorderRadius.all(
-          //         Radius.circular(4),
-          //       ),
-          //       boxShadow: [
-          //         BoxShadow(
-          //           color: Colors.black.withOpacity(1),
-          //           spreadRadius: 5,
-          //           blurRadius: 7,
-          //           offset: Offset(0, 3), // changes position of shadow
-          //         ),
-          //       ],
-          //     ),
-          //     child: Center(
-          //       child: Text(
-          //         widget.status,
-          //         style: TextStyle(
-          //           fontSize: 10,
-          //           fontWeight: FontWeight.normal,
-          //           fontFamily: 'Avenir',
-          //           color: Colors.white,
-          //           shadows: [
-          //             Shadow(
-          //               offset: Offset(3.0, 3.0),
-          //               blurRadius: 8.0,
-          //               color: Color.fromARGB(255, 0, 0, 0),
-          //             )
-          //           ],
-          //         ),
-          //         textAlign: TextAlign.center,
-          //         maxLines: 2,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).canvasColor,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(4),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(1),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  widget.reservation.details.court.name,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Avenir',
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(3.0, 3.0),
+                        blurRadius: 8.0,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      )
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

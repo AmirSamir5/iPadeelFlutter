@@ -50,9 +50,9 @@ class Reservation {
   }
 
   String getTime(String time) {
-    DateTime dateTime = DateTime.parse(time);
-    DateFormat dateFormat = DateFormat.Hm();
-    return dateFormat.format(dateTime);
+    DateTime dateTime = DateTime.parse(time.substring(0, time.indexOf('+')));
+    String myTime = DateFormat('hh:mm a').format(dateTime);
+    return myTime;
   }
 
   String getDate(String date) {

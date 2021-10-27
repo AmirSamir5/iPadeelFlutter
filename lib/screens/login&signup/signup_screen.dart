@@ -21,10 +21,10 @@ import 'package:i_padeel/widgets/custom_text_button.dart';
 import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  final Function? registerSuccess;
   final User? user;
+  final Function? resetSideMenu;
   GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
-  RegistrationScreen({Key? key, this.registerSuccess, this.user})
+  RegistrationScreen({Key? key, this.user, this.resetSideMenu})
       : super(key: key);
 
   @override
@@ -138,9 +138,9 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         MaterialPageRoute(
           builder: (context) => RatingsScreen(
             user: user,
-            registerSuccess: widget.registerSuccess,
             pickedImage: _pickedImage,
             isEdit: _isEdit,
+            resetSideMenu: widget.resetSideMenu,
           ),
         ),
       );

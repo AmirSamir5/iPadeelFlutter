@@ -41,7 +41,8 @@ class RefreshTokenHelper {
             username != "" &&
             password != null &&
             password != "") {
-          await Provider.of<AuthProvider>(context!).login(username, password);
+          await Provider.of<AuthProvider>(context!)
+              .login(username, password, context);
         }
         if (successFunc == null) return;
         successFunc();
@@ -61,7 +62,8 @@ class RefreshTokenHelper {
         String? username = prefs.getString(Constant.prefsUsername);
         String? password = prefs.getString(Constant.prefsPassword);
 
-        await Provider.of<AuthProvider>(context!).login(username!, password!);
+        await Provider.of<AuthProvider>(context!)
+            .login(username!, password!, context);
         if (successFunc == null) return;
         successFunc();
       } catch (error) {

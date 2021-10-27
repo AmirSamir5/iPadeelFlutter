@@ -98,13 +98,15 @@ class UserProvider with ChangeNotifier {
       request.headers.addAll(headers);
       var response = await retry(() => request.send(),
               retryIf: (e) => e is SocketException || e is TimeoutException)
-          .timeout(const Duration(seconds: 5));
+          .timeout(const Duration(seconds: 20));
       var responseStr = await response.stream.bytesToString();
 
       final responseData = json.decode(responseStr);
 
       if (response.statusCode == 200) {
         await getUserProfile();
+      } else if (response.statusCode == 403) {
+        throw const HttpException('403');
       } else {
         throw HttpException(responseData['detail']);
       }

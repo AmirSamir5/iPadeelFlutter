@@ -50,8 +50,8 @@ class ReservationsProvider with ChangeNotifier {
             .toList();
         _reservationsList = loadedReservations;
         notifyListeners();
-      } else if (response.statusCode == 401) {
-        throw const HttpException('401');
+      } else if (response.statusCode == 403) {
+        throw const HttpException('403');
       } else if (response.statusCode == 500) {
         throw const HttpException("Sorry, an unexpected error has occurred.");
       } else {

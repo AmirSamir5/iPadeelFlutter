@@ -5,37 +5,49 @@ import 'package:i_padeel/constants/app_colors.dart';
 class ShowDialogHelper {
   static void showDialogPopup(
       String title, String message, BuildContext context, Function okFunc) {
-    if (context != null) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (ctx) => WillPopScope(
-          onWillPop: () async => false,
-          child: new AlertDialog(
-            backgroundColor: AppColors.backGroundColorLight,
-            title: Text(
-              title,
-              style: TextStyle(color: Colors.white),
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) => WillPopScope(
+        onWillPop: () async => false,
+        child: AlertDialog(
+          backgroundColor: AppColors.backGroundColorLight,
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Avenir',
+              color: Colors.white,
             ),
-            content: Text(
-              message,
-              style: TextStyle(color: Colors.white),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  'Ok',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  okFunc();
-                },
-              )
-            ],
           ),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Avenir',
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Ok',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                ),
+              ),
+              onPressed: () {
+                okFunc();
+              },
+            )
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
 
   static void showDialogPopupWithCancel(String title, String message,
@@ -45,28 +57,48 @@ class ShowDialogHelper {
       context: context,
       builder: (ctx) => WillPopScope(
         onWillPop: () async => false,
-        child: new AlertDialog(
+        child: AlertDialog(
+          backgroundColor: AppColors.backGroundColorLight,
           title: Text(
             title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Avenir',
+              color: Colors.white,
+            ),
           ),
-          content: Text(message,
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Avenir',
-                  color: Colors.black)),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Avenir',
+              color: Colors.white,
+            ),
+          ),
           actions: <Widget>[
-            FlatButton(
-              child: Text(
+            TextButton(
+              child: const Text(
                 'Cancel',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                ),
               ),
               onPressed: () {
                 cancelFunc();
               },
             ),
-            FlatButton(
-              child: Text(
+            TextButton(
+              child: const Text(
                 'OK',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                ),
               ),
               onPressed: () {
                 okFunc();

@@ -11,6 +11,7 @@ import 'package:i_padeel/network/base_calls.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/utils/constants.dart';
 import 'package:i_padeel/utils/urls.dart';
+import 'package:provider/provider.dart';
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,13 +21,6 @@ class AuthProvider with ChangeNotifier {
   BuildContext? _context;
   bool _isAccountVerified = false;
   bool _isAccountAuthenticated = false;
-  UserProvider? _userProvider;
-
-  AuthProvider(this._userProvider);
-
-  void updates(UserProvider userProvider) {
-    _userProvider = userProvider;
-  }
 
   bool get isAccountAuthenticated {
     return _isAccountAuthenticated;
@@ -91,7 +85,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> login(String userName, String password) async {
+  Future<void> login(
+      String userName, String password, BuildContext context) async {
     Map<String, dynamic> data = <String, dynamic>{};
     data['client_id'] = Constant.clientId;
     data['client_secret'] = Constant.clientSecret;
@@ -117,7 +112,8 @@ class AuthProvider with ChangeNotifier {
 
           // await FirebaseMessagingHelper.getToken();
           // setPushNotificationsToken();
-          await _userProvider!.getUserProfile();
+          await Provider.of<UserProvider>(context, listen: false)
+              .getUserProfile();
           _isAccountAuthenticated = true;
           notifyListeners();
         } else {
@@ -129,7 +125,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future registerUser(User user, File? file) async {
+  Future registerUser(User user, File? file, BuildContext context) async {
     var url = Uri.parse(Urls.registerUser());
 
     try {
@@ -168,7 +164,7 @@ class AuthProvider with ChangeNotifier {
       final responseData = json.decode(responseStr);
 
       if (response.statusCode == 200) {
-        await login(user.email!, user.password!);
+        await login(user.email!, user.password!, context);
       } else {
         throw HttpException(responseData['detail']);
       }

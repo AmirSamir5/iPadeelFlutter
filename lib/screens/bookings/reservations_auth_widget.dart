@@ -35,7 +35,7 @@ class _ReservationsAuthenticatedWidgetState
       await Provider.of<ReservationsProvider>(context, listen: false)
           .loadReservations();
     } on HttpException catch (error) {
-      if (error.message == '401') {
+      if (error.message == '403') {
         RefreshTokenHelper.refreshToken(
           context: context,
           successFunc: () {

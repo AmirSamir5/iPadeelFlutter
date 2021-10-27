@@ -10,38 +10,34 @@ class ReservationRestaurantBottomDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Wrap(
+        direction: Axis.vertical,
         children: <Widget>[
           Wrap(
-            direction: Axis.vertical,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ReservationSpecificDetail(
-                    icon: Icons.calendar_today,
-                    detailsText: reservation.date,
-                  ),
-                  ReservationSpecificDetail(
-                    icon: Icons.mobile_screen_share,
-                    detailsText: reservation.mobile,
-                  ),
-                ],
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ReservationSpecificDetail(
+                icon: Icons.calendar_today,
+                detailsText: reservation.date,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ReservationSpecificDetail(
-                    icon: Icons.timer,
-                    detailsText:
-                        (reservation.fromTime) + ' - ' + (reservation.toTime),
-                  ),
-                  ReservationSpecificDetail(
-                    icon: Icons.monetization_on,
-                    detailsText: 'EGP ${reservation.cost}',
-                  ),
-                ],
+              ReservationSpecificDetail(
+                icon: Icons.mobile_screen_share,
+                detailsText: reservation.mobile,
+              ),
+            ],
+          ),
+          Wrap(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+              ReservationSpecificDetail(
+                icon: Icons.timer,
+                detailsText:
+                    (reservation.fromTime) + ' - ' + (reservation.toTime),
+              ),
+              ReservationSpecificDetail(
+                icon: Icons.monetization_on,
+                detailsText: 'EGP ${reservation.cost}',
               ),
             ],
           ),
