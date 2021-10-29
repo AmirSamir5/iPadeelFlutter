@@ -94,6 +94,7 @@ class _RatingsScreenState extends State<RatingsScreen> with PageHelper {
         await Provider.of<AuthProvider>(context, listen: false)
             .registerUser(widget.user, widget.pickedImage, context);
         widget.resetSideMenu!();
+        Navigator.of(context).popUntil((route) => route.isFirst);
         Future.delayed(Duration.zero, () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (ctx) =>

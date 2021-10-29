@@ -37,6 +37,9 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      setState(() {
+        _isChangingStatus = true;
+      });
       bool isLoggedIn =
           await Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
       if (isLoggedIn) {
@@ -60,6 +63,7 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
   checkCurrentIndex() {
     setState(() {
       _currentIndex = widget.index;
+      _isChangingStatus = false;
       switch (_currentIndex) {
         case 5:
           childWidget = LoginScreen(
@@ -267,7 +271,7 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                             : ListTileWidget(
                                 currentIndex: _currentIndex,
                                 widgetIndex: 5,
-                                title: 'Login / Signup',
+                                title: 'Login / Register',
                                 icon: Icons.person,
                                 onTap: () async {
                                   setState(() {

@@ -80,64 +80,63 @@ class _LocationsListItemState extends State<LocationsListItem> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(
-                        left: 16, right: 10, top: 8, bottom: 8),
+                    margin: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(
+                        Flexible(
                           flex: 1,
-                          child: Text(widget.name,
-                              maxLines: 3,
-                              textDirection: TextDirection.ltr,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15)),
+                          child: Text(
+                            widget.name,
+                            maxLines: 3,
+                            textDirection: TextDirection.ltr,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Expanded(
+                        Flexible(
                           flex: 1,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
-                                height: 10,
-                                width: 10,
-                                child: Icon(
-                                  Icons.location_history,
-                                  color: Colors.white,
-                                ),
+                              const Icon(
+                                Icons.location_pin,
+                                color: Colors.white,
+                                size: 24,
                               ),
                               const SizedBox(
-                                width: 15,
+                                width: 4,
                               ),
-                              Text(widget.location,
+                              Expanded(
+                                child: Text(
+                                  widget.location,
                                   maxLines: 3,
                                   textDirection: TextDirection.ltr,
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12)),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Expanded(
+                        Flexible(
                           flex: 1,
-                          child: Text(widget.price,
-                              maxLines: 3,
-                              textDirection: TextDirection.ltr,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12)),
+                          child: Text(
+                            widget.price,
+                            maxLines: 3,
+                            textDirection: TextDirection.ltr,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       ],
                     ),

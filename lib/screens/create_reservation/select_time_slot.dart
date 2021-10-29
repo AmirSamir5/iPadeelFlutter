@@ -105,15 +105,21 @@ class _SelectTimeSlotWidgetState extends State<SelectTimeSlotWidget>
     var verified = prefs.getBool(Constant.prefsUserIsVerifiedKey);
 
     if (verified == null || verified != true) {
-      ShowDialogHelper.showDialogPopup(
-          "",
-          "Please verify your phone number before making a reservation",
-          context, () {
-        Navigator.of(context).pop();
+      ShowDialogHelper.showDialogPopupWithCancel(
+        "Warning",
+        "Please verify your phone number before making a reservation",
+        context,
+        () {
+          Navigator.of(context).pop();
+        },
+        () {
+          Navigator.of(context).pop();
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => VerificationScreen(mobileNumber: mobileNumber)));
-      });
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (ctx) =>
+                  VerificationScreen(mobileNumber: mobileNumber)));
+        },
+      );
       return;
     }
 

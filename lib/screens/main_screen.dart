@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
     if (accessToken != null && accessToken.isNotEmpty) {
       Provider.of<AuthProvider>(context, listen: false)
           .setBuildContext(context);
-      RefreshTokenHelper.refreshToken(
+      await RefreshTokenHelper.refreshToken(
         context: context,
         successFunc: () {
           // setNotificationsToken();
@@ -88,18 +88,26 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: Provider.of<AuthProvider>(context).isLoggedIn(),
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator(
-            backgroundColor: AppColors.secondaryColor,
-          ));
-        }
-        bool isAuth = snapshot.data ?? false;
-        return isAuth ? const SideMenuWidget(index: 0) : const SplashScreen();
-      },
-    );
+    return _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: AppColors.secondaryColor,
+            ),
+          )
+        : FutureBuilder<bool>(
+            future: Provider.of<AuthProvider>(context).isLoggedIn(),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: AppColors.secondaryColor,
+                ));
+              }
+              bool isAuth = snapshot.data ?? false;
+              return isAuth
+                  ? const SideMenuWidget(index: 0)
+                  : const SplashScreen();
+            },
+          );
   }
 }

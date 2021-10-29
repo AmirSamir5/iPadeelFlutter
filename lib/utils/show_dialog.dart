@@ -14,6 +14,7 @@ class ShowDialogHelper {
           backgroundColor: AppColors.backGroundColorLight,
           title: Text(
             title,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -23,6 +24,7 @@ class ShowDialogHelper {
           ),
           content: Text(
             message,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
@@ -31,18 +33,20 @@ class ShowDialogHelper {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text(
-                'Ok',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14,
+            Center(
+              child: TextButton(
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
+                onPressed: () {
+                  okFunc();
+                },
               ),
-              onPressed: () {
-                okFunc();
-              },
             )
           ],
         ),
@@ -59,17 +63,20 @@ class ShowDialogHelper {
         onWillPop: () async => false,
         child: AlertDialog(
           backgroundColor: AppColors.backGroundColorLight,
-          title: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Avenir',
-              color: Colors.white,
+          title: Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'Avenir',
+                color: Colors.white,
+              ),
             ),
           ),
           content: Text(
             message,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
@@ -78,32 +85,41 @@ class ShowDialogHelper {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14,
+            // const Divider(
+            //   color: Colors.grey,
+            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  onPressed: () {
+                    cancelFunc();
+                  },
                 ),
-              ),
-              onPressed: () {
-                cancelFunc();
-              },
-            ),
-            TextButton(
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14,
+                TextButton(
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  onPressed: () {
+                    okFunc();
+                  },
                 ),
-              ),
-              onPressed: () {
-                okFunc();
-              },
-            ),
+              ],
+            )
           ],
         ),
       ),

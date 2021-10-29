@@ -114,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                       ),
                                     ),
                                     Text(
-                                      'SIGN IN',
+                                      'Login / Register',
                                       style: TextStyle(
                                         decoration: TextDecoration.underline,
                                         color: Colors.white,
@@ -134,9 +134,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             onPressed: () => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SideMenuWidget(
-                                  index: 0,
-                                ),
+                                builder: (context) =>
+                                    const SideMenuWidget(index: 0),
                               ),
                             ),
                           ),

@@ -91,18 +91,18 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18)),
-                                    Spacer(),
-                                    Text(
-                                      " View all ",
-                                      maxLines: 3,
-                                      textDirection: TextDirection.ltr,
-                                      style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14,
-                                      ),
-                                    ),
+                                    // Spacer(),
+                                    // Text(
+                                    //   " View all ",
+                                    //   maxLines: 3,
+                                    //   textDirection: TextDirection.ltr,
+                                    //   style: TextStyle(
+                                    //     decoration: TextDecoration.underline,
+                                    //     color: Colors.white,
+                                    //     fontWeight: FontWeight.normal,
+                                    //     fontSize: 14,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 Container(
@@ -139,7 +139,7 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                                           name: item.name,
                                           card: item.image ?? "",
                                           location: item.address,
-                                          price: 'EG ${item.slotPrice}/hr',
+                                          price: 'EGP ${item.slotPrice}/hr',
                                         ),
                                       );
                                     },
