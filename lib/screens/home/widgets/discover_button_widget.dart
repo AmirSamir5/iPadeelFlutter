@@ -17,7 +17,7 @@ class DiscoverButtonWidget extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         SvgPicture.asset(
-          'assets/svg/discover_buttons.svg',
+          'assets/svg/iPadel-buttons.svg',
           height: 180,
           width: MediaQuery.of(context).size.width,
         ),

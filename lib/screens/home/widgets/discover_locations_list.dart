@@ -44,8 +44,6 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
             },
             // ignore: sized_box_for_whitespace
             child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
               child: const SizedBox(
                 height: 60,
                 width: 60,
@@ -78,71 +76,62 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                             ),
                           )
                         : Container(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 8),
+                            margin: const EdgeInsets.all(16),
                             child: Column(
                               children: [
                                 Row(
                                   children: const [
-                                    Text("Locations",
-                                        maxLines: 3,
-                                        textDirection: TextDirection.ltr,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    // Spacer(),
-                                    // Text(
-                                    //   " View all ",
-                                    //   maxLines: 3,
-                                    //   textDirection: TextDirection.ltr,
-                                    //   style: TextStyle(
-                                    //     decoration: TextDecoration.underline,
-                                    //     color: Colors.white,
-                                    //     fontWeight: FontWeight.normal,
-                                    //     fontSize: 14,
-                                    //   ),
-                                    // ),
+                                    Text(
+                                      "Locations",
+                                      maxLines: 3,
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 16),
-                                  width: size.width,
-                                  height: size.height * 0.4,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: locations.length,
-                                    itemBuilder: (context, innerIndex) {
-                                      final item = locations[innerIndex];
-                                      return GestureDetector(
-                                        onTap: isAuth
-                                            ? () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (ctx) =>
-                                                            SelectTimeSlotWidget(
-                                                              location: item,
-                                                            )));
-                                              }
-                                            : () {
-                                                ShowDialogHelper
-                                                    .showDialogPopup(
-                                                  'Attention',
-                                                  'You must Login First',
-                                                  context,
-                                                  () => Navigator.of(context)
-                                                      .pop(),
-                                                );
-                                              },
-                                        child: LocationsListItem(
-                                          name: item.name,
-                                          card: item.image ?? "",
-                                          location: item.address,
-                                          price: 'EGP ${item.slotPrice}/hr',
-                                        ),
-                                      );
-                                    },
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 8),
+                                    width: size.width,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: locations.length,
+                                      itemBuilder: (context, innerIndex) {
+                                        final item = locations[innerIndex];
+                                        return GestureDetector(
+                                          onTap: isAuth
+                                              ? () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (ctx) =>
+                                                              SelectTimeSlotWidget(
+                                                                location: item,
+                                                              )));
+                                                }
+                                              : () {
+                                                  ShowDialogHelper
+                                                      .showDialogPopup(
+                                                    'Attention',
+                                                    'You must Login First',
+                                                    context,
+                                                    () => Navigator.of(context)
+                                                        .pop(),
+                                                  );
+                                                },
+                                          child: LocationsListItem(
+                                            name: item.name,
+                                            card: item.image ?? "",
+                                            location: item.address,
+                                            price: 'EGP ${item.slotPrice}/hr',
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],

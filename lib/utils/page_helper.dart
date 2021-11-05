@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/utils/page_builder.dart';
+import 'package:i_padeel/utils/shadow_text.dart';
 
 abstract class PageHelper {
   Widget buildPage(PageBuilder pageBuilder) {
@@ -51,16 +52,17 @@ abstract class PageHelper {
                           },
                         ),
                       ),
-                  title: Text(
-                    pageBuilder.appBarTitle!,
+                  title: ShadowText(
+                    text: pageBuilder.appBarTitle!,
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Avenir',
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600),
+                      color: Colors.white,
+                      fontFamily: 'Avenir',
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   backgroundColor: Colors.transparent,
-                  centerTitle: true,
+                  centerTitle: false,
                   iconTheme: const IconThemeData(color: Colors.black),
                 )
               : null,

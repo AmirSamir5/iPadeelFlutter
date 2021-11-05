@@ -40,7 +40,12 @@ class _NotificationsScreenState extends State<NotificationsScreen>
             color: Colors.white,
           ),
         ),
-        body: Container(),
+        body: Center(
+          child: Text(
+            'No Notifications',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
       ),
     );
   }

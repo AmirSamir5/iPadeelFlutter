@@ -53,15 +53,29 @@ class _HomeScreenState extends State<HomeScreen> with PageHelper {
         body: SizedBox(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
             children: [
               const Expanded(
-                flex: 2,
+                flex: 1,
                 child: DiscoverButtonWidget(),
               ),
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: DiscoverLocationsList(),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  margin: const EdgeInsets.all(16),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    child: Image.asset(
+                      'assets/images/home-photo.jpeg',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

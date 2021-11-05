@@ -23,7 +23,7 @@ class _ReservationsListScreenState extends State<ReservationsListScreen>
     return buildPage(
       PageBuilder(
         scaffoldKey: _scaffoldkey,
-        appBarTitle: 'Bookings',
+        appBarTitle: 'My Bookings',
         context: context,
         body: Consumer<AuthProvider>(
           builder: (ctx, authProv, child) {
