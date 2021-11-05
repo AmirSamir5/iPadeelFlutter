@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with PageHelper {
               Expanded(
                 flex: 1,
                 child: Container(
-                  margin: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.all(28),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(16)),
                     child: Image.asset(
