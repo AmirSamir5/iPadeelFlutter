@@ -76,26 +76,29 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                             ),
                           )
                         : Container(
-                            margin: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.only(left: 16, top: 16),
                             child: Column(
                               children: [
                                 Row(
-                                  children: const [
-                                    Text(
-                                      "Locations",
-                                      maxLines: 3,
-                                      textDirection: TextDirection.ltr,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.all(16),
+                                      child: const Text(
+                                        "Locations",
+                                        maxLines: 3,
+                                        textDirection: TextDirection.ltr,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Avenir',
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Expanded(
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 8),
+                                  child: SizedBox(
                                     width: size.width,
                                     child: ListView.builder(
                                       shrinkWrap: true,

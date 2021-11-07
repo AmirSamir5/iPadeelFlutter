@@ -69,10 +69,14 @@ class _HomeScreenState extends State<HomeScreen> with PageHelper {
                 child: Container(
                   margin: const EdgeInsets.all(28),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    child: Image.asset(
-                      'assets/images/home-photo.jpeg',
-                      fit: BoxFit.fill,
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 3)),
+                      child: Image.asset(
+                        'assets/images/home-photo.jpeg',
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
