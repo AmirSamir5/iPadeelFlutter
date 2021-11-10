@@ -10,7 +10,9 @@ import 'package:i_padeel/models/user.dart';
 import 'package:i_padeel/network/base_calls.dart';
 import 'package:i_padeel/providers/user_provider.dart';
 import 'package:i_padeel/utils/constants.dart';
+import 'package:i_padeel/utils/firebase_messaging_helper.dart';
 import 'package:i_padeel/utils/urls.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,8 +112,8 @@ class AuthProvider with ChangeNotifier {
           prefs.setString(Constant.prefsUsername, userName);
           prefs.setString(Constant.prefsPassword, password);
 
-          // await FirebaseMessagingHelper.getToken();
-          // setPushNotificationsToken();
+          await FirebaseMessagingHelper.getToken();
+          setPushNotificationsToken();
           await Provider.of<UserProvider>(context, listen: false)
               .getUserProfile();
           _isAccountAuthenticated = true;
@@ -158,7 +160,7 @@ class AuthProvider with ChangeNotifier {
       request.headers.addAll(headers);
       var response = await retry(() => request.send(),
               retryIf: (e) => e is SocketException || e is TimeoutException)
-          .timeout(const Duration(seconds: 5));
+          .timeout(const Duration(seconds: 25));
       var responseStr = await response.stream.bytesToString();
 
       final responseData = json.decode(responseStr);
@@ -224,128 +226,73 @@ class AuthProvider with ChangeNotifier {
     _context = context;
   }
 
-  // Future<void> setPushNotificationsToken() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
-  //   String? fbToken = prefs.getString(Constant.prefsUserFBTokenKey);
-  //   final PackageInfo info = await PackageInfo.fromPlatform();
-  //   if (fbToken != null) {
-  //     await _setDeviceOSAndID();
-  //     String url = Urls.user_notification_token;
-  //     try {
-  //       if (accessToken == null) return;
-  //       final response = await retry(
-  //         () => http.post(Uri.parse(url), headers: {
-  //           "Accept": "application/json",
-  //           "Authorization": "OAuth2 " + accessToken
-  //         }, body: {
-  //           "device_id": _deviceId,
-  //           "device_registration_id": fbToken,
-  //           "device_os": _deviceOs,
-  //           "app_version": info.version
-  //         }).timeout(Duration(seconds: 15)),
-  //         retryIf: (e) => e is SocketException || e is TimeoutException,
-  //         maxAttempts: 2,
-  //       );
-  //       final responseData = json.decode(response.body);
-  //       print(responseData);
-  //       if (response.statusCode == 200) {
-  //       } else if (response.statusCode == 401) {
-  //         throw HttpException('401');
-  //       } else {
-  //         throw HttpException(responseData['detail']);
-  //       }
-  //     } catch (error) {
-  //       print(error);
-  //       throw error;
-  //     }
-  //   }
-  // }
-
-  // Future<void> signup(SignUpModel signup, BuildContext context) async {
-  //   _context = context;
-  //   final url = Urls.user_signup;
-  //   Map<String, dynamic> jsonBody = signup.toJson();
-  //   try {
-  //     final response = await retry(
-  //         () => (http.post(Uri.parse(url), body: jsonBody, headers: {
-  //               "Accept": "application/json",
-  //               "Content-Type": "application/x-www-form-urlencoded"
-  //             }).timeout(Duration(seconds: 5))),
-  //         retryIf: (e) => e is SocketException || e is TimeoutException);
-
-  //     final responseData = json.decode(response.body);
-  //     if (response.statusCode != 200) {
-  //       throw HttpException(responseData['detail']);
-  //     }
-  //     print(response.statusCode);
-  //     print(responseData);
-  //   } catch (error) {
-  //     print(error);
-  //     throw error;
-  //   }
-  // }
-
-  // Future<void> verify(String phoneNumber, String countryCode) async {
-  //   String url = Urls.user_verify;
-  //   Map<String, dynamic> verificationData = new Map<String, dynamic>();
-  //   verificationData['country_code'] = countryCode;
-  //   verificationData['mobile'] = phoneNumber;
-  //   try {
-  //     final response = await retry(
-  //         () => http
-  //             .post(Uri.parse(url), body: verificationData)
-  //             .timeout(Duration(seconds: 5)),
-  //         retryIf: (e) => e is SocketException || e is TimeoutException);
-  //     final responseData = json.decode(response.body);
-  //     print('respone data is: ' + responseData.toString());
-  //     if (response.statusCode == 200) {
-  //       _isAccountVerified = true;
-  //       final prefs = await SharedPreferences.getInstance();
-  //       prefs.setBool(Constant.prefsUserIsVerifiedKey, true);
-  //       notifyListeners();
-  //     } else {
-  //       throw HttpException(responseData['details']);
-  //     }
-  //   } catch (error) {
-  //     print(error);
-  //     throw error;
-  //   }
-  // }
+  Future<void> setPushNotificationsToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
+    String? fbToken = prefs.getString(Constant.prefsUserFBTokenKey);
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    if (fbToken != null) {
+      await _setDeviceOSAndID();
+      String url = Urls.user_notification_token;
+      try {
+        if (accessToken == null) return;
+        final response = await retry(
+          () => http.post(Uri.parse(url), headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer " + accessToken
+          }, body: {
+            "device_id": _deviceId,
+            "device_registration_id": fbToken,
+            "device_os": _deviceOs,
+            "app_version": info.version
+          }).timeout(const Duration(seconds: 20)),
+          retryIf: (e) => e is SocketException || e is TimeoutException,
+          maxAttempts: 2,
+        );
+        final responseData = json.decode(response.body);
+        print(responseData);
+        if (response.statusCode == 200) {
+        } else if (response.statusCode == 401) {
+          throw const HttpException('401');
+        } else if (response.statusCode == 403) {
+          throw const HttpException('401');
+        } else {
+          throw HttpException(responseData['detail']);
+        }
+      } catch (error) {
+        rethrow;
+      }
+    }
+  }
 
   Future<void> logoutUser(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    _isAccountAuthenticated = false;
-    notifyListeners();
-    // _context = context;
-    // await _setDeviceOSAndID();
-    // final prefs = await SharedPreferences.getInstance();
-    // String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
-    // String url = Urls.user_logout;
-    // try {
-    //   if (accessToken != null) {
-    //     final response = await retry(
-    //         () => http.post(Uri.parse(url), headers: {
-    //               "Accept": "application/json",
-    //               "Authorization": "OAuth2 " + accessToken
-    //             }, body: {
-    //               "device_id": _deviceId
-    //             }).timeout(Duration(seconds: 5)),
-    //         retryIf: (e) => e is SocketException || e is TimeoutException);
-    //     if (response.statusCode == 200 || response.statusCode == 401) {
-    //       prefs.clear();
-    //       _isAccountAuthenticated = false;
-    //       notifyListeners();
-    //     } else {
-    //       throw HttpException('Sorry, an unexpected error has occurred.');
-    //     }
-    //   } else {
-    //     throw HttpException('Sorry, an unexpected error has occurred.');
-    //   }
-    // } catch (error) {
-    //   print(error);
-    //   throw error;
-    // }
+    _context = context;
+    await _setDeviceOSAndID();
+    String? accessToken = prefs.getString(Constant.prefsUserAccessTokenKey);
+    String url = Urls.user_logout + '?device_id=$_deviceId';
+    try {
+      if (accessToken != null) {
+        final response = await retry(
+            () => http.delete(Uri.parse(url), headers: {
+                  "Accept": "application/json",
+                  "Authorization": "Bearer " + accessToken
+                }).timeout(const Duration(seconds: 25)),
+            retryIf: (e) => e is SocketException || e is TimeoutException);
+        if (response.statusCode == 200 ||
+            response.statusCode == 401 ||
+            response.statusCode == 403) {
+          prefs.clear();
+          _isAccountAuthenticated = false;
+          notifyListeners();
+        } else {
+          throw const HttpException('Sorry, an unexpected error has occurred.');
+        }
+      } else {
+        throw const HttpException('Sorry, an unexpected error has occurred.');
+      }
+    } catch (error) {
+      rethrow;
+    }
   }
 }

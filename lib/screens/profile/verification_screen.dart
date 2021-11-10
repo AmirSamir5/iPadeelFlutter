@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/utils/firebase_phone_auth.dart';
+import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/widgets/custom_text_button.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -62,6 +63,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 
+  void _showSuccessDialog(String message) {
+    ShowDialogHelper.showSuccessMessage(message, context);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   void _removeFocus() {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
@@ -111,6 +119,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
         if (state == PhoneAuthState.AutoRetrivalTimeOut) {
           _showDialog("Failed", "Request timed out", () {});
+        }
+        if (state == PhoneAuthState.CodeSent) {
+          _showSuccessDialog('Code Sent Successfully!');
         }
         if (state == PhoneAuthState.Verified) {
           setState(() {

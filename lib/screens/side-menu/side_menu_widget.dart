@@ -116,6 +116,34 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
     });
   }
 
+  void _showDialog(String message) {
+    ShowDialogHelper.showErrorMessage(message, context);
+
+    setState(() {
+      _isChangingStatus = false;
+    });
+  }
+
+  Future<void> _logout() async {
+    setState(() {
+      _isChangingStatus = true;
+    });
+    try {
+      await Provider.of<AuthProvider>(context, listen: false)
+          .logoutUser(context);
+      setState(() {
+        _isChangingStatus = false;
+        _currentIndex = 0;
+      });
+    } on HttpException catch (error) {
+      _showDialog(error.message);
+    } on SocketException catch (_) {
+      _showDialog('please check your internet connection and try again later');
+    } catch (error) {
+      _showDialog('Sorry, an unexpected error has occurred.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isChangingStatus
@@ -253,18 +281,11 @@ class _SideMenuWidgetState extends State<SideMenuWidget> {
                                     Navigator.of(context).pop();
                                   }, () async {
                                     setState(() {
+                                      Navigator.of(context).pop();
+                                      SlideDrawer.of(childContext!)?.close();
                                       _isChangingStatus = true;
                                     });
-                                    await Provider.of<AuthProvider>(context,
-                                            listen: false)
-                                        .logoutUser(context);
-                                    Future.delayed(const Duration(seconds: 1));
-                                    setState(() {
-                                      _isChangingStatus = false;
-                                      _currentIndex = 0;
-                                      SlideDrawer.of(childContext!)?.close();
-                                    });
-                                    Navigator.of(context).pop();
+                                    await _logout();
                                   });
                                 },
                               )

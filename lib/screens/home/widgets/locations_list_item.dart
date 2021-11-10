@@ -49,73 +49,94 @@ class _LocationsListItemState extends State<LocationsListItem> {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white, width: 3),
           ),
-          child: Stack(fit: StackFit.expand, children: <Widget>[
-            OptimizedCacheImage(
-              fit: BoxFit.cover,
-              imageUrl: Urls.domain + (widget.card),
-              placeholder: (context, url) => LinearProgressIndicator(
-                backgroundColor: Colors.transparent,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.black.withOpacity(0.2)),
-              ),
-              errorWidget: (context, url, error) => Image.asset(
-                "assets/images/tennisCourt.jpeg",
-                fit: BoxFit.fill,
-              ),
-            ),
-            Column(
-              children: [
-                Flexible(
-                  flex: 9,
-                  child: Container(),
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              OptimizedCacheImage(
+                fit: BoxFit.cover,
+                imageUrl: Urls.domain + (widget.card),
+                placeholder: (context, url) => LinearProgressIndicator(
+                  backgroundColor: Colors.transparent,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.black.withOpacity(0.2)),
                 ),
-                Flexible(
-                  flex: 5,
-                  child: Stack(children: [
+                errorWidget: (context, url, error) => Image.asset(
+                  "assets/images/tennisCourt.jpeg",
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
                     SizedBox(
-                      child: ClipRect(
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            color: Colors.black38,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Flexible(
-                            flex: 1,
-                            child: Text(
-                              widget.name,
-                              maxLines: 3,
-                              textDirection: TextDirection.ltr,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                      height: 100,
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          SizedBox(
+                            child: ClipRect(
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  color: Colors.black38,
+                                ),
                               ),
                             ),
                           ),
-                          Flexible(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_pin,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                                Expanded(
+                          Container(
+                            margin: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Flexible(
+                                  flex: 1,
                                   child: Text(
-                                    widget.location,
+                                    widget.name,
+                                    maxLines: 3,
+                                    textDirection: TextDirection.ltr,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.location_pin,
+                                        color: Colors.white,
+                                        size: 24,
+                                      ),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          widget.location,
+                                          maxLines: 3,
+                                          textDirection: TextDirection.ltr,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    widget.price,
                                     maxLines: 3,
                                     textDirection: TextDirection.ltr,
                                     style: const TextStyle(
@@ -128,27 +149,14 @@ class _LocationsListItemState extends State<LocationsListItem> {
                               ],
                             ),
                           ),
-                          Flexible(
-                            flex: 1,
-                            child: Text(
-                              widget.price,
-                              maxLines: 3,
-                              textDirection: TextDirection.ltr,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                  ]),
+                  ],
                 ),
-              ],
-            ),
-          ]),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -7,6 +7,8 @@ class Urls {
   static String domain = "https://ipadel.noor.net/";
   static String getLocations = domain + "entity/mob/location";
   static String createReservation = domain + "reservation/mob/court";
+  static String user_notification_token = domain + 'account/device';
+  static String user_logout = domain + 'account/device';
 
   static String loginUser() {
     return domain + "o/token/";

@@ -82,7 +82,8 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                                 Row(
                                   children: [
                                     Container(
-                                      margin: const EdgeInsets.all(16),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
                                       child: const Text(
                                         "Locations",
                                         maxLines: 3,
