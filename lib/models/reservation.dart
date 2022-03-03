@@ -1,3 +1,5 @@
+import 'package:i_padeel/models/courts.dart';
+import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/models/user.dart';
 import 'package:intl/intl.dart';
 
@@ -100,64 +102,6 @@ class Court {
   }
 }
 
-class Location {
-  Location({
-    required this.guid,
-    required this.name,
-    required this.district,
-    required this.address,
-    required this.information,
-    this.image,
-    required this.slotPrice,
-    required this.latitude,
-    required this.longitude,
-    required this.courts,
-    required this.timeslots,
-  });
-  late final String guid;
-  late final String name;
-  late final District district;
-  late final String address;
-  late final String information;
-  late final String? image;
-  late final int slotPrice;
-  late final String latitude;
-  late final String longitude;
-  late final List<Courts> courts;
-  late final List<Timeslots> timeslots;
-
-  Location.fromJson(Map<String, dynamic> json) {
-    guid = json['guid'];
-    name = json['name'];
-    district = District.fromJson(json['district']);
-    address = json['address'];
-    information = json['information'];
-    image = json['image'];
-    slotPrice = json['slot_price'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    courts = List.from(json['courts']).map((e) => Courts.fromJson(e)).toList();
-    timeslots =
-        List.from(json['timeslots']).map((e) => Timeslots.fromJson(e)).toList();
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['guid'] = guid;
-    _data['name'] = name;
-    _data['district'] = district.toJson();
-    _data['address'] = address;
-    _data['information'] = information;
-    _data['image'] = image;
-    _data['slot_price'] = slotPrice;
-    _data['latitude'] = latitude;
-    _data['longitude'] = longitude;
-    _data['courts'] = courts.map((e) => e.toJson()).toList();
-    _data['timeslots'] = timeslots.map((e) => e.toJson()).toList();
-    return _data;
-  }
-}
-
 class District {
   District({
     required this.name,
@@ -199,27 +143,6 @@ class City {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
-    _data['name'] = name;
-    return _data;
-  }
-}
-
-class Courts {
-  Courts({
-    required this.guid,
-    required this.name,
-  });
-  late final String guid;
-  late final String name;
-
-  Courts.fromJson(Map<String, dynamic> json) {
-    guid = json['guid'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['guid'] = guid;
     _data['name'] = name;
     return _data;
   }

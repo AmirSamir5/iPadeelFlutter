@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/providers/auth_provider.dart';
 import 'package:i_padeel/providers/locations_provider.dart';
-import 'package:i_padeel/screens/create_reservation/select_time_slot.dart';
+import 'package:i_padeel/screens/create_reservation/reservation_screen.dart';
 import 'package:i_padeel/screens/home/widgets/locations_list_item.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
@@ -113,7 +113,7 @@ class _DiscoverLocationsListState extends State<DiscoverLocationsList> {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (ctx) =>
-                                                              SelectTimeSlotWidget(
+                                                              ReservationScreen(
                                                                 location: item,
                                                               )));
                                                 }

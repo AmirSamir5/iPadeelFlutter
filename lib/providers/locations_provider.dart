@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:i_padeel/models/avaliable_slots.dart';
+import 'package:i_padeel/models/courts.dart';
 import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/network/base_calls.dart';
 import 'package:i_padeel/utils/constants.dart';
@@ -15,6 +17,9 @@ class LocationsProvider with ChangeNotifier {
   List<Location> _locations = [];
   bool _isLoading = false;
   bool _failedToLoad = false;
+  String? selectedDate;
+  Slots? selectedSLot;
+  Courts? selectedCourt;
 
   List<Location> get locations => _locations;
   bool get isLoading => _isLoading;
