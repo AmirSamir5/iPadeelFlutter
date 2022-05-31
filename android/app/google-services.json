@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "296655427112-8suibd1o11jdfvi4rv7niik75hgbd5eg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noor.iPadel",
+            "certificate_hash": "7ba5f5a7f6201150aa5c6dbecb28919ad8e487fe"
+          }
+        },
+        {
           "client_id": "296655427112-glqshuopmpao6oe31mnofckrja7pu1s7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noor.iPadel",
             "certificate_hash": "d93b08405f545586d0831c320fc4a1f747623210"
+          }
+        },
+        {
+          "client_id": "296655427112-l858p8u1uu6sionhf1o2ch8rj5oal4p9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noor.iPadel",
+            "certificate_hash": "e054e18140a46b3a1a23d59643c0de54defa6306"
           }
         },
         {
