@@ -2,21 +2,25 @@ import 'package:i_padeel/models/courts.dart';
 
 class AvailableSlots {
   AvailableSlots({
-    required this.slotdate,
+    required this.name,
+    required this.guid,
     required this.slots,
   });
-  late final String slotdate;
+  late final String name;
+  late final String guid;
   late final List<Slots> slots;
-  
-  AvailableSlots.fromJson(Map<String, dynamic> json){
-    slotdate = json['slotdate'];
-    slots = List.from(json['slots']).map((e)=>Slots.fromJson(e)).toList();
+
+  AvailableSlots.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    guid = json['guid'];
+    slots = List.from(json['slots']).map((e) => Slots.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['slotdate'] = slotdate;
-    _data['slots'] = slots.map((e)=>e.toJson()).toList();
+    _data['name'] = name;
+    _data['guid'] = guid;
+    _data['slots'] = slots.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -25,23 +29,19 @@ class Slots {
   Slots({
     required this.fromTime,
     required this.toTime,
-    required this.courts,
   });
   late final String fromTime;
   late final String toTime;
-  late final List<Courts> courts;
-  
-  Slots.fromJson(Map<String, dynamic> json){
+
+  Slots.fromJson(Map<String, dynamic> json) {
     fromTime = json['from_time'];
     toTime = json['to_time'];
-    courts = List.from(json['courts']).map((e)=>Courts.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['from_time'] = fromTime;
     _data['to_time'] = toTime;
-    _data['courts'] = courts.map((e)=>e.toJson()).toList();
     return _data;
   }
 }

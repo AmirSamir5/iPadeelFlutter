@@ -35,7 +35,13 @@ class Constant {
   static String productionPayfortRefundUrl =
       "https://paymentservices.payfort.com/FortAPI/paymentApi";
 
-  static String clientId = 'qQwGRDtrG1VrYl22wIg1Ig4q3hSIpYHxgvodhByI';
+  //production
+  // static String clientId = 'qQwGRDtrG1VrYl22wIg1Ig4q3hSIpYHxgvodhByI';
+  // static String clientSecret =
+  //     'LRQ3MpxgI3tSLI8P7yg7kJntKL2Iv0WT17JiJmGH10AL7fOs9fG7ZWWcbpB1wnDneznbbcdEUsAnAIDoJnzZhpLXPDWiG8xour3q1ukMpW3wfcdPqSGTivqx3zrfL1XF';
+
+  //staging
+  static String clientId = 'JL8yNMD1hAoTpkx76uee1ZprFDPVxDDK4OboiiVQ';
   static String clientSecret =
-      'LRQ3MpxgI3tSLI8P7yg7kJntKL2Iv0WT17JiJmGH10AL7fOs9fG7ZWWcbpB1wnDneznbbcdEUsAnAIDoJnzZhpLXPDWiG8xour3q1ukMpW3wfcdPqSGTivqx3zrfL1XF';
+      'PiLPPI7cAGATNB3p37D94ssmsKGlB0WktG6u5DAGALy6JysOVi9Knmq6ZmkoQjrRAcJCBuN63I0dsDgp3QSZlJSCwiOfN9AHkvQNC1fNt7lbpqvd6vF7SKHa18ygq8J7';
 }

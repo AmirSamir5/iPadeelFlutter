@@ -88,7 +88,7 @@ class Location {
         address: json['address'],
         information: json['information'],
         image: json['image'],
-        slotPrice: json['slot_price'],
+        slotPrice: json['slot_price'] ?? 0,
         latitude: json['latitude'],
         longitude: json['longitude'],
         courts:

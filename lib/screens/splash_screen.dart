@@ -97,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => const SideMenuWidget(
-                                      index: 5,
+                                      index: 6,
                                     ),
                                   ),
                                 ),

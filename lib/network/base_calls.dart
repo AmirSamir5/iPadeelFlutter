@@ -9,7 +9,7 @@ class CallDetails {
   final String url;
   final Map<String, String>? queryStrings;
   final Map<String, String>? headers;
-  final Map<String, dynamic>? body;
+  final dynamic body;
   CallDetails({
     required this.url,
     this.queryStrings,
@@ -101,7 +101,7 @@ class BaseCalls {
         url: modifiedUrl,
         queryStrings: updatedStrings,
         headers: updatedHeaders,
-        body: updatedBody);
+        body: encodedBody);
 
     if (stringbody != "") {
       encodedBody = stringbody;

@@ -1,40 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:i_padeel/models/avaliable_slots.dart';
-import 'package:i_padeel/models/location.dart';
 import 'package:i_padeel/network/base_calls.dart';
 import 'package:i_padeel/utils/urls.dart';
 
 class AvaliableTimeSLotsProvider with ChangeNotifier {
-  List<AvailableSlots> _locationSLots = [];
-  bool _isLoading = false;
-  bool _failedToLoad = false;
-  Map<String, List<AvailableSlots>> loadedLocationsAvaliableSlots = {};
+  List<AvailableSlots> _availableSlots = [];
+  List<AvailableSlots> get availableSlots {
+    return _availableSlots;
+  }
 
-  List<AvailableSlots> get locationSlots => _locationSLots;
-  bool get isLoading => _isLoading;
-  bool get failedToLoad => _failedToLoad;
-
-  Future<void> fetchLocationSlots(String locationId) async {
-    // List<AvailableSlots>? previouslyLoadedSlots =
-    //     loadedLocationsAvaliableSlots[locationId];
-    // if (previouslyLoadedSlots != null) {
-    //   _locationSLots = previouslyLoadedSlots;
-    //   notifyListeners();
-    //   return;
-    // }
-
-    // if (_isLoading) {
-    //   return;
-    // }
-    _locationSLots.clear();
-    _isLoading = true;
-    _failedToLoad = false;
-
-    Future.delayed(Duration.zero, () {
-      notifyListeners();
-    });
+  Future fetchLocationSlots(String locationId) async {
     String url = Urls.getAvaliableSlotsForDay(locationId);
 
     try {
@@ -42,28 +20,21 @@ class AvaliableTimeSLotsProvider with ChangeNotifier {
         if (response.statusCode == 200) {
           final extractedJson =
               json.decode(response.body)['available_slots'] as List;
-          final List<AvailableSlots> locationSlots = extractedJson
+          _availableSlots = extractedJson
               .map((json) => AvailableSlots.fromJson(json))
               .toList();
-
-          loadedLocationsAvaliableSlots[locationId] = locationSlots;
-          _locationSLots = locationSlots;
-          _failedToLoad = false;
-          _isLoading = false;
           notifyListeners();
+        } else if (response.statusCode == 401) {
+          throw const HttpException('401');
+        } else if (response.statusCode == 500) {
+          throw const HttpException("Sorry, an unexpected error has occurred.");
         } else {
-          _isLoading = false;
-          _failedToLoad = true;
-          notifyListeners();
+          throw HttpException(json.decode(response.body)['error_description']);
         }
       });
     } catch (error) {
-      _isLoading = false;
-      _failedToLoad = true;
       notifyListeners();
       rethrow;
     }
   }
-
-  //List.from(json['available_slots']).map((e)=>AvailableSlots.fromJson(e)).toList();
 }

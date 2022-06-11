@@ -17,9 +17,6 @@ class LocationsProvider with ChangeNotifier {
   List<Location> _locations = [];
   bool _isLoading = false;
   bool _failedToLoad = false;
-  String? selectedDate;
-  Slots? selectedSLot;
-  Courts? selectedCourt;
 
   List<Location> get locations => _locations;
   bool get isLoading => _isLoading;
@@ -64,13 +61,10 @@ class LocationsProvider with ChangeNotifier {
     }
   }
 
-  Future createReservation(
-      String date, String courtId, String fromTime, String toTime) async {
+  Future createReservation(String courtId, List<Slots> selectedSlots) async {
     Map<String, dynamic> data = <String, dynamic>{};
-    data['date'] = date;
+    data['slots'] = selectedSlots;
     data['court'] = courtId;
-    data['from'] = fromTime;
-    data['to'] = toTime;
 
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString(Constant.prefsUserAccessTokenKey) ?? "";

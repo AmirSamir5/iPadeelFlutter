@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:i_padeel/constants/app_colors.dart';
 import 'package:i_padeel/models/avaliable_slots.dart';
@@ -12,7 +14,6 @@ import 'package:i_padeel/screens/profile/verification_screen.dart';
 import 'package:i_padeel/utils/constants.dart';
 import 'package:i_padeel/utils/page_builder.dart';
 import 'package:i_padeel/utils/page_helper.dart';
-import 'package:i_padeel/utils/shadow_text.dart';
 import 'package:i_padeel/utils/show_dialog.dart';
 import 'package:i_padeel/widgets/custom_text_button.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ReservationScreen extends StatefulWidget {
   final Location location;
-  List<AvailableSlots>? _avaliableSLotsForLocation;
   ReservationScreen({
     Key? key,
     required this.location,
@@ -33,28 +33,51 @@ class ReservationScreen extends StatefulWidget {
 class _ReservationScreenState extends State<ReservationScreen> with PageHelper {
   bool _loadingCreateReservation = false;
   bool _isInit = true;
+  bool _isLoading = true;
+  List<AvailableSlots>? _availableSlots;
+  List<Slots>? _slots;
+  List<Slots>? _selectedSlot;
+  Courts? _selectedCourt;
 
   @override
   void initState() {
     if (_isInit) {
+      _getAvaliableSlots();
       _isInit = false;
-      Provider.of<LocationsProvider>(context, listen: false).selectedDate =
-          null;
-      Provider.of<LocationsProvider>(context, listen: false).selectedCourt =
-          null;
-      Provider.of<LocationsProvider>(context, listen: false).selectedSLot =
-          null;
     }
     super.initState();
   }
 
+  void _getAvaliableSlots() async {
+    try {
+      await Provider.of<AvaliableTimeSLotsProvider>(context, listen: false)
+          .fetchLocationSlots(widget.location.guid);
+      _availableSlots =
+          Provider.of<AvaliableTimeSLotsProvider>(context, listen: false)
+              .availableSlots;
+    } on HttpException catch (error) {
+      ShowDialogHelper.showDialogPopup('Faild', error.message, context, () {
+        Navigator.of(context).pop();
+      });
+    } on SocketException catch (_) {
+      ShowDialogHelper.showDialogPopup(
+          'Faild', 'Please Check Internet Connection', context, () {
+        Navigator.of(context).pop();
+      });
+    } catch (e) {
+      ShowDialogHelper.showDialogPopup(
+          'Faild', 'Sorry, an unexpected error has occurred.', context, () {
+        Navigator.of(context).pop();
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   Future<void> _createReservation() async {
-    if (Provider.of<LocationsProvider>(context, listen: false).selectedDate ==
-            null ||
-        Provider.of<LocationsProvider>(context, listen: false).selectedCourt ==
-            null ||
-        Provider.of<LocationsProvider>(context, listen: false).selectedSLot ==
-            null) {
+    if (_selectedCourt == null || _selectedSlot == null) {
       return;
     }
 
@@ -105,22 +128,16 @@ class _ReservationScreenState extends State<ReservationScreen> with PageHelper {
     try {
       await Provider.of<LocationsProvider>(context, listen: false)
           .createReservation(
-        Provider.of<LocationsProvider>(context, listen: false).selectedDate!,
-        Provider.of<LocationsProvider>(context, listen: false)
-            .selectedCourt!
-            .guid,
-        Provider.of<LocationsProvider>(context, listen: false)
-            .selectedSLot!
-            .fromTime,
-        Provider.of<LocationsProvider>(context, listen: false)
-            .selectedSLot!
-            .toTime,
+        _selectedCourt!.guid,
+        _selectedSlot!,
       );
       setState(() {
         _loadingCreateReservation = false;
       });
-      ShowDialogHelper.showDialogPopup("Congratulations",
-          "Your reservation has been completed successfully", context, () {
+      ShowDialogHelper.showDialogPopup(
+          "Congratulations",
+          "Your reservation has been completed successfully, You can cancel your reserveration till 4 hours before reservation time",
+          context, () {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       });
@@ -145,67 +162,58 @@ class _ReservationScreenState extends State<ReservationScreen> with PageHelper {
         appBarTitle: 'Create Reservation',
         context: context,
         body: SingleChildScrollView(
-          child: _loadingCreateReservation
+          child: _isLoading
               ? const Center(
                   child: CircularProgressIndicator(
                     color: AppColors.secondaryColor,
                   ),
                 )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CourtsWidget(
-                      location: widget.location,
-                      selectCourt: (court) {
-                        setState(() {
-                          Provider.of<LocationsProvider>(context, listen: false)
-                              .selectedCourt = court;
-                        });
-                      },
-                    ),
-                    Provider.of<LocationsProvider>(context, listen: false)
-                                .selectedCourt !=
-                            null
-                        ? TimeSlotWidget(
-                            location: widget.location,
-                            selectedSlots: (slot) {
-                              setState(() {
-                                Provider.of<LocationsProvider>(context,
-                                        listen: false)
-                                    .selectedSLot = slot;
-                              });
-                            },
-                            selectedDate: (date) {
-                              setState(() {
-                                Provider.of<LocationsProvider>(context,
-                                        listen: false)
-                                    .selectedDate = date;
-                              });
-                            },
-                          )
-                        : Container(),
-                    const SizedBox(height: 32),
-                    (Provider.of<LocationsProvider>(context, listen: false)
-                                    .selectedDate !=
-                                null &&
-                            Provider.of<LocationsProvider>(context,
-                                        listen: false)
-                                    .selectedCourt !=
-                                null &&
-                            Provider.of<LocationsProvider>(context,
-                                        listen: false)
-                                    .selectedSLot !=
-                                null)
-                        ? CustomTextButton(
-                            text: 'Reserve',
-                            onPressed: () {
-                              _createReservation();
-                            },
-                          )
-                        : Container()
-                  ],
-                ),
+              : _availableSlots != null
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CourtsWidget(
+                          location: widget.location,
+                          selectCourt: (court) {
+                            setState(() {
+                              _selectedCourt = court;
+                              _slots = _availableSlots!
+                                  .singleWhere(
+                                      (element) => element.name == court.name)
+                                  .slots;
+                            });
+                          },
+                        ),
+                        _selectedCourt != null && _slots != null
+                            ? TimeSlotWidget(
+                                slots: _slots!,
+                                location: widget.location,
+                                selectedSlots: (slot) {
+                                  setState(() {
+                                    _selectedSlot = slot;
+                                  });
+                                },
+                              )
+                            : Container(),
+                        const SizedBox(height: 32),
+                        _selectedCourt != null && _selectedSlot != null
+                            ? _loadingCreateReservation
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  )
+                                : CustomTextButton(
+                                    text: 'Reserve',
+                                    onPressed: () {
+                                      _createReservation();
+                                    },
+                                  )
+                            : Container()
+                      ],
+                    )
+                  : Container(),
         ),
       ),
     );

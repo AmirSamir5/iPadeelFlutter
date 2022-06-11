@@ -19,11 +19,12 @@ class SlotsWidget extends StatefulWidget {
 class _SlotsWidgetState extends State<SlotsWidget> {
   String fromFormattedTime() {
     return widget.formatter
-        .format(DateFormat('HH:mm:ss').parse(widget.fromTime));
+        .format(DateFormat('HH:mm:ss').parse(widget.fromTime.split('T')[1]));
   }
 
   String toFormattedTime() {
-    return widget.formatter.format(DateFormat('HH:mm:ss').parse(widget.toTime));
+    return widget.formatter
+        .format(DateFormat('HH:mm:ss').parse(widget.toTime.split('T')[1]));
   }
 
   @override
