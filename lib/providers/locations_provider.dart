@@ -63,13 +63,14 @@ class LocationsProvider with ChangeNotifier {
 
   Future createReservation(String courtId, List<Slots> selectedSlots) async {
     Map<String, dynamic> data = <String, dynamic>{};
-    data['slots'] = selectedSlots;
     data['court'] = courtId;
+    data['slots'] = selectedSlots.map((e) => e.toJson()).toList();
 
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString(Constant.prefsUserAccessTokenKey) ?? "";
     Map<String, String> headers = {
-      "Accept": "application/json",
+      "Accept": "*/*",
+      "Content-Type": "application/json",
       "Authorization": "Bearer " + accessToken
     };
 
@@ -82,7 +83,7 @@ class LocationsProvider with ChangeNotifier {
         } else {
           throw HttpException(responseData['error_description']);
         }
-      });
+      }, isEncoded: true);
     } catch (error) {
       rethrow;
     }

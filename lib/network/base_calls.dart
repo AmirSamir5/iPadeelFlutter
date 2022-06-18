@@ -80,7 +80,7 @@ class BaseCalls {
       Map<String, String>? queryStrings,
       Map<String, dynamic>? body,
       dynamic Function(dynamic) parse,
-      [String stringbody = ""]) async {
+      {bool isEncoded = false}) async {
     Map<String, dynamic> updatedBody = (body == null) ? {} : body;
 
     // var encodedBody = jsonEncode(updatedBody);
@@ -103,14 +103,12 @@ class BaseCalls {
         headers: updatedHeaders,
         body: encodedBody);
 
-    if (stringbody != "") {
-      encodedBody = stringbody;
-    }
     try {
       final response = await retry(
         () => http
             .post(Uri.parse(modifiedUrl),
-                body: updatedBody, headers: updatedHeaders)
+                body: isEncoded ? encodedBody : updatedBody,
+                headers: updatedHeaders)
             .timeout(
               const Duration(seconds: 15),
             ),

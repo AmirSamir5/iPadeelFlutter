@@ -46,6 +46,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>iPadel requires access to UserTracking to identify the device for managing data statistics, enhance your experience and get a nearby clubs. Please rest assured that opening the premission will not obtain your private information on other sites.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs to access user profile picture in registration</string>
 	<key>NSPhotoLibraryUsageDescription</key>

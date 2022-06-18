@@ -40,8 +40,8 @@ class Slots {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['from_time'] = fromTime;
-    _data['to_time'] = toTime;
+    _data['from'] = fromTime;
+    _data['to'] = toTime;
     return _data;
   }
 }

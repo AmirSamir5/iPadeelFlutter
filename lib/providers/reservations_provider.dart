@@ -34,6 +34,7 @@ class ReservationsProvider with ChangeNotifier {
       final response = await retry(
           () => http.get(Uri.parse(url), headers: {
                 "Accept": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": "Bearer " + accessToken
               }).timeout(
                 const Duration(

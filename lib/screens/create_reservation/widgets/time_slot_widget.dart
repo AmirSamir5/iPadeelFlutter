@@ -56,8 +56,8 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
     ]);
   }
 
-  void _showErrorDialog(String message) {
-    ShowDialogHelper.showErrorMessage(message, context);
+  void _showErrorDialog(String message, {Duration? duration}) {
+    ShowDialogHelper.showErrorMessage(message, context, duration: duration);
   }
 
   @override
@@ -196,6 +196,21 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
                                         onTap: () {
                                           setState(() {
                                             if (indexExists) {
+                                              var format = DateFormat("HH:mm");
+                                              var t1 = format.parse(widget
+                                                  .slots[index].fromTime
+                                                  .split("T")[1]);
+                                              var t2 = format.parse(
+                                                  _selectedSlots.last.fromTime
+                                                      .split('T')[1]);
+                                              if (t1.isBefore(t2)) {
+                                                _showErrorDialog(
+                                                    "Can't be removed, remove higher slots first",
+                                                    duration: const Duration(
+                                                        seconds: 2));
+
+                                                return;
+                                              }
                                               _selectedSlots.length == 1
                                                   ? _selectedSlots = []
                                                   : _selectedSlots.removeWhere(
@@ -205,38 +220,120 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
                                               return;
                                             }
                                             if (_selectedSlots.length < 3) {
+                                              if (_selectedSlots.length > 0) {
+                                                var format =
+                                                    DateFormat("HH:mm");
+                                                var t1 = format.parse(widget
+                                                    .slots[index].fromTime
+                                                    .split("T")[1]);
+                                                var t2 = format.parse(
+                                                    _selectedSlots[0]
+                                                        .fromTime
+                                                        .split('T')[1]);
+                                                if (t1.isBefore(t2)) {
+                                                  Duration diff =
+                                                      t2.difference(t1);
+                                                  var hours = diff.inHours;
+                                                  print('Before $hours h');
+                                                  _showErrorDialog(
+                                                      'Please Select Bigger Slot',
+                                                      duration: const Duration(
+                                                          seconds: 2));
+
+                                                  return;
+                                                } else {
+                                                  var t2 = format.parse(
+                                                      _selectedSlots
+                                                          .last.fromTime
+                                                          .split('T')[1]);
+                                                  Duration diff =
+                                                      t1.difference(t2);
+                                                  var hours = diff.inHours;
+                                                  print('After $hours h');
+                                                  if (hours > 1) {
+                                                    var t2 = format.parse(
+                                                        _selectedSlots[0]
+                                                            .fromTime
+                                                            .split('T')[1]);
+                                                    diff = t1.difference(t2);
+                                                    hours = diff.inHours;
+                                                    if (hours > 1) {
+                                                      _showErrorDialog(
+                                                          'Please Select Succssive Slots',
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 2));
+
+                                                      return;
+                                                    }
+                                                  }
+                                                }
+                                              }
+
                                               _selectedSlots
                                                   .add(widget.slots[index]);
                                             } else {
-                                              _selectedSlots.removeAt(0);
-                                              _selectedSlots
-                                                  .add(widget.slots[index]);
+                                              _showErrorDialog(
+                                                  'Maximum 3 slots',
+                                                  duration: const Duration(
+                                                      seconds: 2));
                                             }
 
                                             widget
                                                 .selectedSlots(_selectedSlots);
                                           });
                                         },
-                                        child: Container(
-                                          margin: const EdgeInsets.all(8),
-                                          padding: const EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                            color: indexExists
-                                                ? AppColors.secondaryColor
-                                                : Colors.white,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10),
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.all(8),
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: indexExists
+                                                    ? AppColors.secondaryColor
+                                                    : Colors.white,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: SlotsWidget(
+                                                fromTime: widget
+                                                    .slots[index].fromTime
+                                                    .toString(),
+                                                toTime: widget
+                                                    .slots[index].toTime
+                                                    .toString(),
+                                              ),
                                             ),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: SlotsWidget(
-                                            fromTime: widget
-                                                .slots[index].fromTime
-                                                .toString(),
-                                            toTime: widget.slots[index].toTime
-                                                .toString(),
-                                          ),
+                                            indexExists
+                                                ? Positioned(
+                                                    top: -4,
+                                                    right: 0,
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Colors.black,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Text(
+                                                        (_selectedSlots.indexOf(
+                                                                    widget.slots[
+                                                                        index]) +
+                                                                1)
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container()
+                                          ],
                                         ));
                                   }),
                     ),

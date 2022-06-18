@@ -126,24 +126,25 @@ class ShowDialogHelper {
     );
   }
 
-  static void showErrorMessage(String message, BuildContext context) {
+  static void showErrorMessage(String message, BuildContext context,
+      {Duration? duration}) {
     FToast fToast;
     fToast = FToast();
     fToast.init(context);
 
     fToast.showToast(
-      toastDuration: Duration(seconds: 3),
+      toastDuration: duration ?? const Duration(seconds: 3),
       gravity: ToastGravity.BOTTOM,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.red[500],
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.error,
               color: Colors.white,
             ),
